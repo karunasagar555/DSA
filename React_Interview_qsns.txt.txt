@@ -1,0 +1,2725 @@
+﻿1) what is spread & rest operator, explain me with an example !
+s:In JavaScript, the spread and rest operators are both denoted by the ... symbol, but they are used for different purposes.
+
+The spread operator is used to expand an iterable object (like an array, string or object) into individual elements. The spread operator can be used in various contexts like function calls, array literals, object literals and more.
+
+For example, let's say we have an array of numbers and we want to pass those numbers as individual arguments to a function. We can use the spread operator to achieve this as follows:
+
+const numbers = [1, 2, 3, 4, 5];
+console.log(...numbers); // Output: 1 2 3 4 5
+
+In this example, we are using the spread operator to expand the numbers array into individual arguments for the console.log() function.
+
+The rest operator, on the other hand, is used to represent an indefinite number of arguments as an array. This is useful when we want to pass a variable number of arguments to a function.
+
+For example, let's say we have a function that takes in any number of arguments and returns their sum. We can use the rest operator to achieve this as follows:
+
+function sum(...numbers) {
+  return numbers.reduce((total, num) => total + num, 0);
+}
+
+console.log(sum(1, 2, 3)); // Output: 6
+console.log(sum(4, 5, 6, 7)); // Output: 22
+
+In this example, we are using the rest operator to represent an indefinite number of arguments as an array named numbers. We then use the reduce() method to sum up all the numbers in the array.
+
+In React, both the spread and rest operators can be used in various contexts like passing props to a component or destructuring props. Here's an example of using the spread and rest operators in React:
+
+function MyComponent({ prop1, prop2, ...restProps }) {
+  // prop1 and prop2 can be accessed directly
+  // restProps will be an object containing any additional props
+  return (
+    <div>
+      <p>{prop1}</p>
+      <p>{prop2}</p>
+      <ul>
+        {Object.entries(restProps).map(([key, value]) => (
+          <li key={key}>
+            {key}: {value}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+const props = {
+  prop1: "Hello",
+  prop2: "World",
+  prop3: "How are you?",
+  prop4: 42,
+};
+
+ReactDOM.render(<MyComponent {...props} />, document.getElementById("root"));
+
+In this example, we are using the spread operator to pass all the properties in the props object to the MyComponent component. Inside the component, we are using the rest operator to extract prop1 and prop2 as individual variables, and the rest of the props are collected into the restProps object. We then render a list of all the additional props using the Object.entries() and map() methods.
+
+
+
+
+2) Difference between call, apply and bind methods with an example  !
+s: In JavaScript, call, apply, and bind are methods that allow you to call a function with a different this value or with arguments passed in a different way. Here are the differences between these methods:
+
+call(): The call() method is used to call a function with a specific this value and arguments provided individually.
+
+const person = {
+  firstName: 'John',
+  lastName: 'Doe'
+};
+
+function greet() {
+  console.log(`Hello, ${this.firstName} ${this.lastName}`);
+}
+
+greet.call(person); // Hello, John Doe
+
+In the example above, we define an object called person with firstName and lastName properties, and a function called greet that logs a message using this.firstName and this.lastName. We then use the call() method to call the greet function with the person object as the this value.
+
+apply(): The apply() method is similar to call(), but the arguments are passed as an array.
+
+const person = {
+  firstName: 'John',
+  lastName: 'Doe'
+};
+
+function greet(greeting) {
+  console.log(`${greeting}, ${this.firstName} ${this.lastName}`);
+}
+
+greet.apply(person, ['Hi']); // Hi, John Doe
+
+In the example above, we define an object called person with firstName and lastName properties, and a function called greet that takes a greeting parameter and logs a message using this.firstName and this.lastName. We then use the apply() method to call the greet function with the person object as the this value and the 'Hi' string as the greeting parameter.
+
+bind(): The bind() method is used to create a new function that has a specific this value, but doesn't call the original function.
+
+const person = {
+  firstName: 'John',
+  lastName: 'Doe'
+};
+
+function greet() {
+  console.log(`Hello, ${this.firstName} ${this.lastName}`);
+}
+
+const boundGreet = greet.bind(person);
+
+boundGreet(); // Hello, John Doe
+
+In the example above, we define an object called person with firstName and lastName properties, and a function called greet that logs a message using this.firstName and this.lastName. We then use the bind() method to create a new function called boundGreet that has the person object as the this value. We then call boundGreet() to log the message.
+
+In summary, call() and apply() allow you to call a function with a specific this value and arguments passed in a different way, while bind() creates a new function with a specific this value.
+
+
+3) why do we use arrow function over regular function, explain me with an example ?
+s: Arrow functions were introduced in ES6 as a shorthand syntax for creating functions in JavaScript. Here are some reasons why arrow functions are sometimes preferred over regular functions:
+
+Conciseness: Arrow functions have a shorter syntax than regular functions, which can make your code easier to read and write. They don't require the function keyword, curly braces, or the return keyword in certain cases.
+
+this binding: Arrow functions bind the this keyword lexically, which means that this inside an arrow function refers to the this value of the enclosing scope. In contrast, regular functions have a dynamic this binding that can be confusing and error-prone.
+
+Here is an example that demonstrates the difference in this binding between arrow functions and regular functions:
+
+const person = {
+  name: 'Alice',
+  sayName: function() {
+    console.log(this.name);
+  },
+  sayNameArrow: () => {
+    console.log(this.name);
+  }
+};
+
+person.sayName(); // "Alice"
+person.sayNameArrow(); // undefined
+
+In the example above, person is an object with two methods: sayName() and sayNameArrow(). sayName() is a regular function that uses this to refer to the name property of the person object, and sayNameArrow() is an arrow function that also tries to use this to refer to the name property. However, because arrow functions bind this lexically, this inside sayNameArrow() actually refers to the global this value (which is undefined in strict mode), not the person object.
+
+Implicit return: Arrow functions have an implicit return statement when they consist of a single expression. This can make the code more concise and readable. Here's an example:
+
+const numbers = [1, 2, 3, 4, 5];
+
+const doubledNumbers = numbers.map(number => number * 2);
+
+console.log(doubledNumbers); // [2, 4, 6, 8, 10]
+
+In the example above, we use the map() method with an arrow function to create a new array that contains each element of numbers multiplied by 2. Because the arrow function consists of a single expression (number * 2), there's no need for curly braces or a return statement.
+
+In summary, arrow functions are sometimes preferred over regular functions because they are concise, have a predictable this binding, and have an implicit return statement in certain cases. However, regular functions still have their place in JavaScript and may be more appropriate in certain situations.
+
+
+
+
+4) what is Event Bubbling, Event Capturing, in javascript explain me with code examples ?
+s: In JavaScript, event propagation refers to the way events are propagated or travel through the DOM tree. There are two ways that events can propagate: event bubbling and event capturing.
+
+Event capturing is the process in which an event travels from the top of the DOM tree down to the target element. In event capturing, the event starts at the outermost element (i.e., the document object) and then travels down the hierarchy of nested elements until it reaches the target element.
+
+Event bubbling is the opposite process, in which an event travels from the target element up through the hierarchy of nested elements to the outermost element (i.e., the document object).
+
+Here's an example to illustrate event bubbling and capturing in JavaScript:
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Bubbling and Capturing Example</title>
+</head>
+<body>
+  <div id="outer">
+    <div id="middle">
+      <div id="inner">
+        <button id="btn">Click Me!</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const outer = document.getElementById('outer');
+    const middle = document.getElementById('middle');
+    const inner = document.getElementById('inner');
+    const btn = document.getElementById('btn');
+
+    outer.addEventListener('click', () => {
+      console.log('Outer Clicked');
+    }, true);
+
+    middle.addEventListener('click', () => {
+      console.log('Middle Clicked');
+    }, true);
+
+    inner.addEventListener('click', () => {
+      console.log('Inner Clicked');
+    }, true);
+
+    btn.addEventListener('click', (event) => {
+      console.log('Button Clicked');
+      event.stopPropagation();
+    });
+  </script>
+</body>
+</html>
+
+In this example, we have a nested hierarchy of div elements, each with a click event listener attached in capturing mode. We also have a button element inside the innermost div element, with its own click event listener attached.
+
+When the button is clicked, the click event travels from the button element up through the nested hierarchy of div elements to the outermost element (i.e., the document object), triggering each click event listener in turn. This is event bubbling.
+
+However, because we have called event.stopPropagation() in the click event listener for the button element, the click event will not continue propagating to the parent elements beyond the button. This means that the click event listeners attached to the div elements will not be triggered.
+
+In summary, event bubbling and capturing refer to the ways in which events propagate through the DOM tree. Event bubbling is the process in which an event travels from the target element up through the hierarchy of nested elements to the outermost element, while event capturing is the opposite process in which an event travels from the top of the DOM tree down to the target element.
+
+
+5) Guess the output 
+    1)  foo ();
+        function foo () {               // function declarations are hoisted
+            console.log("hello");
+        }
+    
+    2)  bar();
+        const bar = () => {             // function expressions are not hoisted
+            console.log("Hey");
+        }
+
+
+6) are var, let & const hoisted ?
+s: yes, variables declared with var are hoisted with a default initialization of undefined.
+whereas let & const are hoisted without a default initialization, this makes them inaccessible 
+(as such variables will be in a temporal dead zone).
+
+
+
+7) Guess the Output
+
+
+    function getMultipleValues(){
+        return 20;
+        return 30;
+    }
+
+
+    const result = getMultipleValues();
+    console.log(result);
+
+
+8) what are generators in Javascript ?
+s: In ES6, generators were introduced. genertaors are a different kind of functions in javascript that can pause the 
+execution at one or multiple times & resume the execution whenever needed. to resume the execution we have to call the 
+next method that is available in the generator object.
+
+
+
+
+ex : 
+    function* getMultipleValues(){
+        yield 20;
+        yield 30;
+    }
+
+
+    const result = getMultipleValues();
+    console.log(result.next());
+    console.log(result.next().value);
+
+
+9) write code for the given input
+    const person = {
+        name : "katty",
+        age : 22
+    };
+
+
+    output :
+    [
+        ["name", "katty"],
+        ["age", "20"]
+    ];
+s: console.log(Object.entries(person)); // here for "Object" keyword O letter should be in caps otherwise it will throw an error, not defined.
+s: without using inbuilt function 
+
+
+const person = {
+    name : "Katty",
+    age : 22
+}
+
+
+const getObjectEntries = (obj) => {
+    const objKeys = Object.keys(obj)
+    // console.log(objKeys);
+        
+    const answer = objKeys.map((key) => {
+        const value = obj[key];
+        return [key, value];
+    });
+        
+    return answer;
+};
+    
+console.log(getObjectEntries(person));
+
+
+
+
+10) what is state ?
+s : State in ReactJS is a way to store and manage a component's local and dynamic data, which can change and 
+affect the component's render. It is a private and protected piece of data that can only be updated using 
+React's setState() method, ensuring the component re-renders whenever the state changes.
+
+
+11) what is prop in React ?
+s: Props in React are a way for components to receive data from their parent component. 
+Props stand for properties and are used to pass data from a parent component to its child component as a way of 
+communication. Props are read-only and should not be modified within a child component, only read. 
+Props can be of any data type, including numbers, strings, objects, arrays, and functions.
+
+
+12) how do we say that a functional component does not contain state?
+s: A functional component in React is considered stateless because it does not have its own internal state. 
+Unlike class components, functional components do not have access to this.state or this.setState methods. 
+Instead, functional components receive data through props from their parent component and only render the UI based on 
+that data. If a component does not need to manage any dynamic data or user interactions, 
+it can be defined as a functional component. This makes functional components simpler, easier to understand, 
+and faster to render than class components.
+
+
+13) Difference between forEach and Map with an example ?
+s : https://www.geeksforgeeks.org/difference-between-foreach-and-map-loop-in-javascript/?type=article&id=667085
+
+
+1) forEach Method
+let arr = [1,2,3,4];
+const result = arr.forEach((element) => {
+    return element * element;
+})
+console.log(result);       output :  undefined
+
+
+///////////////// OR ////////////
+
+
+let arr = [1, 2, 3, 4];
+const result = arr.forEach(element => element * element);
+console.log(result); 
+
+
+
+
+2) Map Method
+let arr1 = [1,2,3,4];
+const answer = arr1.map((element) => {
+    return element * element;
+})
+console.log(answer);  output :  [ 1, 4, 9, 16 ]
+
+
+
+
+////////////////////// OR /////////////////////////
+
+
+let arr = [1, 2, 3, 4];
+const result = arr.map(element => element * element);
+console.log(result); 
+
+
+14) Guess  the output ?
+let myArray1 = [1, 2, 3, 4];
+myArray1.forEach((element, index) => {
+    myArray1[index] = element * element;
+})
+console.log(myArray1);     // output :  [ 1, 4, 9, 16 ] : because we are using the same array here, forEach modifies the array, but in the above code we are storing in result so it does not give us a new array, so we get undefined.
+
+
+15) Guess  the output ?
+let myArray1 = [1, 2, 3, 4];
+myArray1.map((element, index) => {
+    myArray1[index] = element * element;
+})
+console.log(myArray1);    // output :  [ 1, 4, 9, 16 ] 
+
+
+16) what is the difference between functional & class based components ?
+s: the difference are as follows :
+    1) In class based components we make render function and we return inside it.
+       In function based components we return directly.
+    2) we use "this" keyword in class based components, methods management is easy, we can run methods using this.
+       we don't use this keyword In function based components
+
+
+17) when to use "this" keyword  ?????????
+s: when you are inside a class ( class based component), you have to use "this" for variables and methods.
+
+
+18) what is localization and how do we do localization  in React ?
+s : Localization is the process of adapting an application or website to different languages and regions, making it accessible to a wider audience. In other words, localization involves translating an application's user interface (UI) elements such as buttons, menus, and messages to different languages, and adapting them to the local conventions and cultural norms.
+
+
+In React, localization can be achieved by using a library such as React-Intl or i18next. These libraries provide tools for managing translations, formatting numbers and dates, and handling pluralization rules.
+
+
+19) what is web accessibility and how do we do it in react ?
+s:  Web accessibility refers to the practice of making websites and web applications accessible to people with disabilities. This includes ensuring that people with visual, auditory, physical, and cognitive impairments can use and navigate a website using assistive technology such as screen readers, keyboard navigation, and alternative text for images.
+
+
+React, being a popular front-end JavaScript library, has many built-in features and tools to help make web applications more accessible. Here are some key tips for improving web accessibility in React:
+
+
+Use semantic HTML tags: Using semantic HTML tags such as <nav>, <header>, <main>, <section>, and <footer> helps screen readers and other assistive technologies understand the structure and purpose of your website.
+
+
+Provide alternative text for images: Use the alt attribute to provide a text description of images, which is important for users who can't see them.
+
+
+Use accessible forms: Ensure that all form elements have a corresponding <label> element and provide clear error messages.
+
+
+Provide keyboard navigation: Ensure that all interactive elements, such as buttons and links, are keyboard accessible and can be accessed using the Tab key.
+
+
+Test with accessibility tools: Use accessibility testing tools like aXe or React Accessibility to identify accessibility issues in your application and fix them.
+
+
+Consider color contrast: Make sure the contrast between foreground and background colors meets accessibility guidelines to ensure that all users can read and understand the content.
+
+
+By following these tips, you can create web applications in React that are more inclusive and accessible to a wider range of users, including those with disabilities.
+
+
+20) what are axe or react accessbility ?
+s: aXe and React Accessibility are two popular accessibility testing tools that can help identify accessibility issues in your React application.
+
+
+aXe is an open-source accessibility testing engine that can be integrated into your development workflow. It has a browser extension that allows you to test web pages for accessibility issues as you browse them. It can also be integrated into automated testing frameworks like Cypress and Jest to catch accessibility issues early in the development process. aXe provides a detailed report of accessibility issues along with suggestions on how to fix them.
+
+
+React Accessibility is a library that provides accessibility-focused components and utilities for building React applications. It includes components such as AccessibleImage, AccessibleLink, and AccessibleButton that are designed to be more accessible out of the box. It also includes utilities for managing focus, handling keyboard navigation, and managing ARIA attributes.
+
+
+While both tools can be used to identify accessibility issues in your React application, they serve slightly different purposes. aXe is primarily a testing tool that helps you identify accessibility issues after your application is built, while React Accessibility is a library that provides pre-built accessible components and utilities to use in your application.
+
+
+Using both aXe and React Accessibility together can help you create more accessible React applications by identifying and fixing accessibility issues and using pre-built accessible components and utilities.
+
+
+21)what are aria attributes ?
+s:ARIA (Accessible Rich Internet Applications) attributes are a set of HTML attributes that can be used to improve the accessibility of web content, particularly for users with disabilities who may use assistive technology like screen readers.
+
+
+ARIA attributes provide additional information about the purpose and structure of HTML elements, making it easier for assistive technology to understand and navigate web content. For example, the aria-label attribute can be used to provide a text description of an element that is not already described by its surrounding text. The aria-hidden attribute can be used to indicate that an element should be hidden from assistive technology, which can be useful for decorative elements or elements that are redundant for screen reader users.
+
+
+ARIA attributes are not a replacement for good semantic HTML and should only be used when appropriate. It's important to use ARIA attributes correctly and in conjunction with other accessibility best practices to ensure that your web content is accessible to as many users as possible.
+
+
+Here are some commonly used ARIA attributes:
+
+
+aria-label: Provides a text label for an element that is not already described by its surrounding text.
+aria-labelledby: References the ID of another element on the page that provides a label for the current element.
+aria-describedby: References the ID of another element on the page that provides a description for the current element.
+aria-hidden: Indicates that an element should be hidden from assistive technology.
+aria-disabled: Indicates that an element is disabled and cannot be interacted with.
+aria-expanded: Indicates whether a collapsible element, such as an accordion or tree view, is currently expanded or collapsed.
+aria-selected: Indicates whether an element in a list or table is currently selected.
+
+
+22)give me the definition of semantic elements in html in one line? 
+s: Semantic elements in HTML are tags that convey meaning and structure to the content, making it more accessible and understandable for both humans and machines.
+
+Examples of semantic HTML elements include:
+
+<header>: Used to define the header of a section or page.
+<nav>: Used to define a navigation section.
+<article>: Used to define a self-contained piece of content, such as a blog post or news article.
+<section>: Used to define a section of a web page.
+<aside>: Used to define content that is not directly related to the main content, such as a sidebar or callout box.
+<footer>: Used to define the footer of a section or page.
+By using these and other semantic HTML elements, web developers can create web pages that are more accessible, maintainable, and search engine-friendly.
+
+
+23) write code to find the minimum element in array in jaavascript
+s : 
+
+let arr = [7, 200, 400, 500,9, 100, 9000]
+function findMin(arr) {
+    let min = arr[0]; //100
+    for(let i = 0; i < arr.length; i++){
+        if(arr[i] < min){
+            min = arr[i];
+        }
+    }
+    return min;
+}
+
+
+console.log(findMin(arr));
+
+
+#############################################################################################################
+
+
+
+
+
+
+24) why React ?
+s: There are several reasons why developers choose to use React:
+
+
+Performance: React uses a virtual DOM to update the view efficiently, minimizing the number of updates to the actual DOM, 
+which results in faster and smoother updates to the user interface.
+
+
+Reusability: React components can be easily reused, which makes it easier to build and manage large-scale applications. 
+This allows developers to write less code and increase productivity.
+
+
+Modularity: React allows developers to build and manage individual components, which can be combined to build complex user interfaces. 
+This makes it easier to maintain and update applications, as well as reuse components in other projects.
+
+
+Ecosystem: React has a strong and growing ecosystem, with a large community of developers, tools, and libraries. 
+This makes it easier for developers to find solutions to common problems and integrate React into their projects.
+
+
+Learning curve: React has a relatively low learning curve, especially for developers who are familiar with JavaScript. 
+The library uses a declarative syntax, which makes it easy to understand and write code, even for developers who are new to the library.
+
+
+Compatibility: React is compatible with other JavaScript libraries and frameworks, which makes it a versatile option for building a wide 
+range of applications.
+
+
+Overall, React is a popular choice for building web applications due to its performance, reusability, modularity, and strong ecosystem, 
+as well as its relatively low learning curve and compatibility with other technologies.
+
+
+#############################################################################################################
+
+
+25) what is virtual DOM ?
+s: The Virtual DOM is a representation of the actual DOM (Document Object Model) that is stored in memory, and 
+it is used to update the actual DOM in an efficient way.
+
+
+When a change is made to the user interface, React updates the Virtual DOM instead of the actual DOM. 
+The Virtual DOM then compares the new state with the previous state and determines which changes need to be made to 
+the actual DOM. This process is faster than updating the actual DOM directly because it eliminates the need to re-render 
+the entire user interface, and instead only updates the parts that have changed.
+
+
+The Virtual DOM also makes it easier to update the user interface in real-time, as it reduces the amount of work the 
+browser needs to do to update the actual DOM. This results in a smoother user experience and improved performance.
+
+
+In summary, the Virtual DOM is a powerful tool that allows React to manage the components of a user interface in an 
+efficient way, resulting in faster and smoother updates to the view, as well as improved performance.
+
+
+#############################################################################################################
+
+
+The Virtual DOM is a virtual representation of a web page in the form of a tree structure, similar 
+to the actual DOM (Document Object Model). When a change is made to the web page, React updates the Virtual DOM 
+instead of the actual DOM, to determine what needs to be changed.
+
+
+Think of the Virtual DOM as a lighter and faster version of the actual DOM, where React can make changes quickly and 
+easily, without affecting the actual DOM. The Virtual DOM then compares the updated version with the previous version, 
+and calculates the most efficient way to update the actual DOM. This process is much faster than updating the actual DOM 
+directly, and it ensures that the web page updates smoothly and efficiently.
+
+
+To simplify it further, the Virtual DOM is a way for React to manage changes to a web page, by creating a virtual 
+representation of the page, making changes to that virtual representation, and then efficiently updating the actual DOM.
+This makes the updates to the web page faster and smoother, resulting in a better user experience.
+
+
+#####################################################################################################################
+
+
+There is only one actual DOM for a web page, but there are two virtual DOMs in the Virtual DOM concept in React. 
+The two virtual DOMs are the previous virtual DOM, which represents the state of the user interface before the change, 
+and the updated virtual DOM, which represents the state of the user interface after the change.
+
+
+React updates the virtual DOM in memory and then compares the previous virtual DOM with the updated virtual DOM. 
+This comparison process is used to determine the most efficient way to update the actual DOM, as only the necessary 
+changes are made. The previous virtual DOM is then discarded and the updated virtual DOM becomes the new previous 
+virtual DOM for the next change.
+
+
+In this way, React uses the Virtual DOM to manage changes to the user interface in an efficient and fast way, 
+resulting in improved performance and a smoother user experience.
+
+
+#####################################################################################################################
+
+
+When you make a change to a React component, React updates the virtual DOM in memory, rather than updating 
+the actual DOM directly. The virtual DOM is a lightweight in-memory representation of the actual DOM, so updating 
+it is much faster than updating the actual DOM directly.
+
+
+For example, if you change the text of a button, React updates the virtual DOM to reflect that change. 
+It then compares the previous virtual DOM with the updated virtual DOM, and calculates the most efficient way to update 
+the actual DOM to match the updated virtual DOM. This process is much faster than updating the actual DOM directly, 
+as it avoids the need to re-render the entire user interface.
+
+
+Once the virtual DOM has been updated, React then updates the actual DOM with the necessary changes, using a process 
+called "reconciliation". The reconciliation process is optimized to minimize the number of updates to the actual DOM, 
+which helps to keep the user interface responsive and fast.
+
+
+So to summarize, React updates the virtual DOM in memory because it's faster and more efficient than updating 
+the actual DOM directly. The virtual DOM acts as an intermediary between the user interface and the actual DOM, 
+making it possible to update the user interface quickly and smoothly.
+
+
+
+
+#############################################################################################################
+
+
+
+
+26) what is Reconciliation ?
+s: Reconciliation is the process in React of updating the actual DOM to match the virtual DOM. It's the step that takes 
+the changes made in the virtual DOM and applies them to the actual DOM.
+
+
+Reconciliation works by comparing the previous virtual DOM with the updated virtual DOM, and determining the most 
+efficient way to update the actual DOM. React only updates the parts of the actual DOM that have changed, rather 
+than re-rendering the entire user interface. This helps to keep the user interface fast and responsive, even when 
+there are many updates.
+
+
+For example, if you change the text of a button, React updates the virtual DOM to reflect that change. When the 
+virtual DOM has been updated, React performs reconciliation to apply the change to the actual DOM. The reconciliation 
+process compares the previous virtual DOM with the updated virtual DOM, and determines that only the text of the button 
+needs to be updated. React then updates the actual DOM with the new text, leaving the rest of the user interface
+unchanged.
+
+
+In this way, reconciliation is a crucial step in the Virtual DOM concept in React, as it allows React to update the 
+actual DOM in an efficient and fast way, resulting in a better user experience.
+
+
+#####################################################################################################
+
+
+
+
+27) what are hooks in React ?
+s: In React, hooks are a feature introduced in React 16.8 that allow you to add state and other React features to 
+functional components. Prior to the introduction of hooks, adding state or other React features to functional 
+components required the use of class components, which can be verbose and harder to understand for some developers.
+
+
+React hooks provide a more concise and intuitive way of adding state and other functionality to functional components, 
+without the need for class components. Some of the most commonly used hooks in React include:
+
+
+useState: This hook allows you to add state to a functional component. It returns an array with two values: the current 
+state, and a function to update the state.
+
+
+useEffect: This hook allows you to run side effects (such as data fetching or setting up subscriptions) in response to 
+changes in state or props.
+
+
+useContext: This hook allows you to access data from the React context API in a functional component.
+
+
+useReducer: This hook allows you to manage complex state updates and keep your state updates clean and organized.
+
+
+There are many other hooks in React, each with its own specific use case, but these are some of the most commonly 
+used ones. By using hooks, you can write more efficient, maintainable, and readable code in React.
+
+
+###########################################################################################################
+
+
+React hooks are a feature in React that allow functional components to have state and other React features, 
+without the need for class components, enabling more efficient, maintainable, and readable code.
+
+
+###########################################################################################################
+
+
+28) what is React Router ?
+s:what is react router ?
+React Router is a library that provides routing capabilities to single-page applications built using React.js. It allows developers to create dynamic, client-side routing and navigation within a React application, allowing for multiple views and layouts. With React Router, developers can define routes and links for different components of the application, and the library will handle rendering the appropriate components based on the URL path.
+
+
+React Router offers several powerful features, including nested routes, code splitting, dynamic routing, and route transitions. It also supports a variety of routing strategies, such as hash-based routing and HTML5 history API routing, and can be used with other popular React libraries and frameworks, such as Redux.
+
+
+React Router is widely used by developers building complex, modern web applications using React. It provides a flexible and intuitive way to manage the state of the application and the user's navigation, making it easier to create scalable and maintainable code.  
+
+
+29) Tell me about hash based routing & HTML5 history API routing ?
+S: Hash-based routing and HTML5 history API routing are two different strategies that React Router supports for managing client-side routing within a React application.
+
+
+Hash-based routing is a technique that uses the hash portion of the URL (the part of the URL after the "#" symbol) to represent different routes within the application. When the user clicks on a link or enters a new URL, React Router intercepts the request and updates the hash portion of the URL to match the requested route. This technique has been used for many years and is supported by all modern browsers.
+
+
+HTML5 history API routing, on the other hand, uses the browser's history API to manipulate the browser's address bar and manage the application's routing. This technique allows for more natural-looking URLs that do not rely on the hash symbol, and can be used to create more complex routing strategies. With HTML5 history API routing, the URL path is updated directly to match the requested route, rather than relying on a hash.
+
+
+Both techniques have their advantages and disadvantages. Hash-based routing is simple to implement and works with all browsers, but can result in less user-friendly URLs and has limited support for certain advanced features. HTML5 history API routing provides more natural-looking URLs and better support for advanced features, but requires more complex configuration and may not work with older browsers that do not support the history API.
+
+
+React Router supports both hash-based routing and HTML5 history API routing, allowing developers to choose the strategy that best fits their application's needs.
+
+
+30) what are the lifecycle methods of react in class and functional based components ? just give me the list
+s : Class Based Components:
+constructor()
+render()
+componentDidMount()
+componentDidUpdate()
+componentWillUnmount()
+componentDidCatch()
+
+
+Functional Components (using Hooks):
+useState()
+useEffect()
+useContext()
+useReducer()
+useCallback()
+useMemo()
+useRef()
+useImperativeHandle()
+useLayoutEffect()
+useDebugValue()
+
+
+31) explain me about the most commonly used React Hooks ?
+s: useState(): This hook allows functional components to have state. It returns an array with two elements: the current state value, and a function to update the state value.
+
+
+useEffect(): This hook allows functional components to have side effects, such as fetching data from an API or updating the DOM. It takes two arguments: a function to perform the side effect, and an optional array of dependencies that will trigger the effect.
+
+
+useContext(): This hook allows functional components to consume a context that has been created with React.createContext(). It returns the current context value.
+
+
+useReducer(): This hook allows functional components to use a reducer pattern for managing complex state. It returns an array with two elements: the current state value, and a function to dispatch actions that update the state value.
+
+
+useCallback(): This hook memoizes a function, meaning that it will only recompute the function if one of its dependencies has changed. This is useful for performance optimization when passing functions as props to child components.
+
+
+useMemo(): This hook memoizes a value, meaning that it will only recompute the value if one of its dependencies has changed. This is useful for performance optimization when computing expensive values.
+
+
+useRef(): This hook creates a mutable object that persists across re-renders. It can be used to store a reference to a DOM node or a previous value.
+
+
+useImperativeHandle(): This hook allows functional components to expose an imperative API to parent components. It is often used in conjunction with forwardRef() to allow parent components to call methods on child components.
+
+
+useLayoutEffect(): This hook is similar to useEffect(), but it fires synchronously after all DOM mutations have been applied. This is useful for cases where a side effect depends on the size or position of a DOM element.
+
+
+useDebugValue(): This hook can be used to display a label for custom hooks in the React DevTools. It takes a value and a function to transform the value for display purposes.
+
+
+
+
+32)what are synthetic events in react ?
+s : In React, synthetic events are a cross-browser wrapper around the native browser events. They are implemented to ensure that the same event behavior is available across different browsers and devices. Synthetic events are instances of the SyntheticEvent object, which is a pooled object to reduce memory allocation and improve performance.
+
+
+The SyntheticEvent object contains the same properties and methods as the native browser event, but it is normalized to work consistently across different browsers. It also has some additional features, such as stopping the propagation of the event, preventing the default action, and pooling to improve performance.
+
+
+When an event is triggered in React, a SyntheticEvent object is created and passed to the event handler function. The event handler can access the properties and methods of the SyntheticEvent object, just like it would with a native browser event.
+
+
+Here's an example of how to handle a click event using a synthetic event in React:
+
+
+function handleClick(event) {
+  event.preventDefault();
+  console.log('The link was clicked.');
+}
+
+
+function MyComponent() {
+  return (
+    <a href="#" onClick={handleClick}>
+      Click me
+    </a>
+  );
+}
+
+
+In this example, the handleClick function is passed as the onClick event handler for a link element. When the link is clicked, a SyntheticEvent object is created and passed to the handleClick function. The preventDefault() method is called to prevent the default action of the link (navigating to a new page), and a message is logged to the console.
+
+
+33) what are Native Browser events?
+s: Native browser events are events that are built into the web browser and triggered by user actions or browser actions. Examples of native browser events include click, mouseover, keydown, submit, and load.
+
+
+When an event is triggered in the browser, it creates an instance of a native event object, which contains information about the event, such as the type of event, the target element that triggered the event, and any data associated with the event.
+
+
+Native browser events can be captured and handled using JavaScript event listeners, which are functions that are executed when an event is triggered. Event listeners can be attached to any element in the HTML document using the addEventListener() method.
+
+
+Here's an example of how to handle a click event using a native event listener in JavaScript:
+
+
+const myButton = document.querySelector('button');
+
+
+function handleClick(event) {
+  console.log('The button was clicked.');
+}
+
+
+myButton.addEventListener('click', handleClick);
+
+
+In this example, an event listener is attached to a button element using the addEventListener() method. When the button is clicked, a native click event is triggered, which creates an instance of a MouseEvent object. The handleClick function is then executed, which logs a message to the console.
+
+
+It's worth noting that React uses a synthetic event system to wrap native browser events in a consistent, cross-browser way. This allows React to provide a unified interface for handling events in both the browser and server environments.
+
+
+34) what is closure, with an example ?
+
+
+35) what is PROMISE ?
+S: it is an object that holds the result of an asynchronous operation. so this promise object promises to hold the result of an asynchronous operation, when we create a promise, intially it is in the pending state, when the operation completes that state will change to either resolve or reject, resolve if the operation gets success, reject if the operation gets failed.
+
+
+// if the promise is resolved it means that the asynchronous operation is completed successfully.
+
+
+36) what is object destructuring, explain me with an example in JS ?
+s: Object destructuring is a feature in JavaScript that allows you to extract properties from an object and assign them to individual variables in a more concise and readable way.
+
+
+Here's an example of object destructuring in JavaScript:
+
+
+const person = {
+  name: 'John',
+  age: 30,
+  address: {
+    street: '123 Main St',
+    city: 'Anytown',
+    state: 'CA'
+  }
+};
+
+
+// Extract properties from the object using object destructuring
+const { name, age, address: { city } } = person;
+
+
+// Output the extracted properties
+console.log(name);  // John
+console.log(age);   // 30
+console.log(city);  // Anytown
+
+
+In the code above, we declare an object called person with properties name, age, and address. We then use object destructuring to extract the name, age, and city properties from the object and assign them to individual variables with the same name.
+
+
+Note that we also use object destructuring to extract the city property from the nested address object, using the syntax address: { city }. This syntax allows us to extract a nested property and assign it to a variable with a different name.
+
+
+Object destructuring can also be used to assign default values to variables if the property doesn't exist in the object:
+
+
+const { name, age, job = 'Developer' } = person;
+
+
+console.log(name);  // John
+console.log(age);   // 30
+console.log(job);   // Developer
+
+
+In the code above, we extract the name and age properties from the person object, and assign a default value of 'Developer' to the job variable in case the job property doesn't exist in the object.
+
+
+
+
+37) explain me the differences between call, apply and bind methods with an example ?
+s :In JavaScript, call, apply, and bind are methods that allow you to call a function with a different this value or with arguments passed in a different way. Here are the differences between these methods:
+
+
+call(): The call() method is used to call a function with a specific this value and arguments provided individually.
+
+
+const person = {
+  firstName: 'John',
+  lastName: 'Doe'
+};
+
+
+function greet() {
+  console.log(`Hello, ${this.firstName} ${this.lastName}`);
+}
+
+
+greet.call(person); // Hello, John Doe
+
+
+In the example above, we define an object called person with firstName and lastName properties, and a function called greet that logs a message using this.firstName and this.lastName. We then use the call() method to call the greet function with the person object as the this value.
+
+
+apply(): The apply() method is similar to call(), but the arguments are passed as an array.
+
+
+const person = {
+  firstName: 'John',
+  lastName: 'Doe'
+};
+
+
+function greet(greeting) {
+  console.log(`${greeting}, ${this.firstName} ${this.lastName}`);
+}
+
+
+greet.apply(person, ['Hi']); // Hi, John Doe
+
+
+In the example above, we define an object called person with firstName and lastName properties, and a function called greet that takes a greeting parameter and logs a message using this.firstName and this.lastName. We then use the apply() method to call the greet function with the person object as the this value and the 'Hi' string as the greeting parameter.
+
+
+bind(): The bind() method is used to create a new function that has a specific this value, but doesn't call the original function.
+
+
+const person = {
+  firstName: 'John',
+  lastName: 'Doe'
+};
+
+
+function greet() {
+  console.log(`Hello, ${this.firstName} ${this.lastName}`);
+}
+
+
+const boundGreet = greet.bind(person);
+
+
+boundGreet(); // Hello, John Doe
+
+
+In the example above, we define an object called person with firstName and lastName properties, and a function called greet that logs a message using this.firstName and this.lastName. We then use the bind() method to create a new function called boundGreet that has the person object as the this value. We then call boundGreet() to log the message.
+
+
+In summary, call() and apply() allow you to call a function with a specific this value and arguments passed in a different way, while bind() creates a new function with a specific this value.
+
+
+38) Given an array containing four numbers, arr = [1,2,3,4].  write code, take each element from the array and append it to the https://jsonplaceholder.typicode.com/todos API endpoint and display the output for each element
+s :To achieve this, we can loop through the array using a forEach() loop and make a request to the API endpoint for each element in the array. Here's the code:
+
+
+const arr = [1, 2, 3, 4];
+
+
+arr.forEach(num => {
+  fetch(`https://jsonplaceholder.typicode.com/todos/${num}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Request failed with status code ' + response.status);
+      }
+    })
+    .then(data => {
+      console.log(data);
+      // Handle the response data here
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+      // Handle the error here
+    });
+});
+
+
+
+
+/////////////////////////// OR //////////////////////
+
+
+using map :
+
+
+const arr = [1, 2, 3, 4];
+
+
+const promises = arr.map(num => {
+  return fetch(`https://jsonplaceholder.typicode.com/todos/${num}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Request failed with status code ' + response.status);
+      }
+    })
+    .then(data => {
+      console.log(data);
+      // Handle the response data here
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+      // Handle the error here
+    });
+});
+
+
+
+
+39) write code to handle the API request and response using React.js?
+
+
+s: 
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+
+function MyComponent() {
+  const [todos, setTodos] = useState([]);
+
+
+  useEffect(() => {
+    axios.get('https://jsonplaceholder.typicode.com/todos')
+      .then(response => {
+        setTodos(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+
+  return (
+    <div>
+      {todos.map(todo => (
+        <div key={todo.id}>
+          <h3>{todo.title}</h3>
+          <p>{todo.completed ? 'Completed' : 'Not completed'}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+
+40) write code to handle the API request and response using JS ?
+s:
+fetch('https://jsonplaceholder.typicode.com/todos')
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Request failed with status code ' + response.status);
+    }
+  })
+  .then(data => {
+    console.log(data);
+    // Handle the response data here
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+    // Handle the error here
+  });
+
+
+
+
+41) what is slice and splice in javascript with an example?
+s: slice and splice are both built-in methods in JavaScript used for manipulating arrays, but they have different functionalities.
+
+
+slice():
+The slice() method returns a shallow copy of a portion of an array into a new array, without modifying the original array. It takes two arguments: start and end (optional), which represent the indices of the starting and ending points of the slice, respectively. The start index is included in the slice, while the end index is not.
+
+
+Here's an example:
+
+
+const originalArray = [1, 2, 3, 4, 5];
+const newArray = originalArray.slice(1, 4); // slice from index 1 to 3 (4 is not included)
+console.log(newArray); // Output: [2, 3, 4]
+console.log(originalArray); // Output: [1, 2, 3, 4, 5]
+
+
+In this example, the slice() method creates a new array newArray that contains elements from the original array, starting from index 1 and ending at index 4 (not included). The original array originalArray remains unchanged.
+
+
+splice():
+The splice() method is used to change the contents of an array by removing or replacing elements. It takes three arguments: start, deleteCount, and elements (optional). The start argument represents the index at which to start changing the array, deleteCount specifies the number of elements to remove from the array, and the elements parameter represents the elements to add to the array (if any).
+
+
+Here's an example:
+
+
+const originalArray = [1, 2, 3, 4, 5];
+originalArray.splice(2, 1, 6); // remove 1 element starting from index 2 and insert 6
+console.log(originalArray); // Output: [1, 2, 6, 4, 5]
+
+
+In this example, the splice() method removes one element starting from index 2 and inserts the number 6 in its place. The resulting array is [1, 2, 6, 4, 5]. The splice() method modifies the original array, unlike the slice() method, which returns a new array without modifying the original array.
+
+
+42) give me the list of ES6 features in javascript and explain them ?
+s: ES6 (ECMAScript 2015) is a major update to the JavaScript language, and it introduced several new features to improve the readability and maintainability of the code. Here are some of the key features of ES6:
+
+
+let and const Declarations: let and const are new ways of declaring variables in JavaScript. let is a block-scoped variable, while const is a constant, whose value can't be reassigned.
+
+
+Arrow Functions: Arrow functions are a shorthand syntax for writing functions in JavaScript. They have a simpler syntax and lexical scoping, making them easier to read and maintain.
+
+
+Template Literals: Template literals are a new way of creating strings in JavaScript. They allow for easier string interpolation and multiline strings.
+
+
+Destructuring: Destructuring is a way of extracting values from arrays or objects into separate variables. It simplifies the code and makes it more readable.
+
+
+Default Parameters: Default parameters allow you to specify default values for function parameters. This makes it easier to write more flexible and maintainable functions.
+
+
+Rest and Spread Operators: The rest and spread operators allow you to work with arrays and objects more easily. The rest operator allows you to collect the remaining parameters of a function into an array, while the spread operator allows you to spread the elements of an array or object into a new array or object.
+
+
+Classes: ES6 introduces a new syntax for creating classes in JavaScript. Classes are a way of defining objects with shared properties and methods.
+
+
+Modules: Modules are a way of organizing code in JavaScript. They allow you to split your code into smaller files and export and import the necessary code.
+
+
+Promises: Promises are a way of handling asynchronous code in JavaScript. They allow you to write asynchronous code that is easier to read and maintain.
+
+
+Generators: Generators are a new type of function in JavaScript that allows you to pause and resume their execution. They are useful for writing asynchronous code and are often used in conjunction with Promises.
+
+
+Overall, ES6 brought significant improvements to the JavaScript language and made it easier to write and maintain complex code.
+
+
+43) write code to handle & validate a form in react.js, along with email and password, password should contain atleast 8 characters, uppercase, lowercae, special characters and email should contain @, .  & other special characters, alphanumeric characters
+s: 
+
+import React, { useState } from 'react';
+
+const Form = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
+      setError('Password must contain at least 8 characters, one uppercase, one lowercase, and one special character');
+      return;
+    }
+
+    // Submit the form
+    setError('');
+    console.log('Email:', email);
+    console.log('Password:', password);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {error && <p>{error}</p>}
+      <label htmlFor="email">Email:</label>
+      <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} 
+      required
+      />
+      <br/> <br/>
+      <label htmlFor="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      /> <br/><br/>
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+
+export default Form;
+
+
+44)how do you fix a spinny wheel that is loading on the web page even after the webpage's data loading by writing code? how do you write code to add accessbility to a website, how  do you improve the webpage speeds in a webite, reducing the loading time of webpages, by writing code ?
+s:
+
+Fixing a spinning wheel that is loading on the web page even after the webpage's data loading is typically related to optimizing the performance of the website. Here are some steps that can help:
+
+Use a content delivery network (CDN): A CDN can help to reduce the loading time of your website by distributing the content across multiple servers around the world.
+
+Optimize images and videos: Large images and videos can slow down your website. Optimize your media files to reduce their size without losing quality.
+
+Minify CSS and JavaScript files: Minifying your CSS and JavaScript files can help to reduce their size and improve the loading time of your website.
+
+Use lazy loading: Lazy loading is a technique that loads only the necessary content on the page, rather than loading everything at once. This can help to reduce the loading time of your website.
+
+Use browser caching: Caching can help to reduce the loading time of your website by storing frequently accessed data in the user's browser.
+
+Adding accessibility to a website involves ensuring that the website can be used by people with disabilities. Here are some steps that can help:
+
+Use semantic HTML: Semantic HTML can help to make your website more accessible by providing additional information about the structure and meaning of your content.
+
+Use alt text for images: Alt text provides a description of an image for users who are unable to see it. Use descriptive alt text for all images on your website.
+
+Use descriptive links: Use descriptive link text that provides information about the destination of the link.
+
+Provide captions and transcripts: Captions and transcripts can help to make video and audio content accessible to users who are deaf or hard of hearing.
+
+Improving webpage speeds in a website involves optimizing the performance of the website. Here are some steps that can help:
+
+Optimize images and videos: Large images and videos can slow down your website. Optimize your media files to reduce their size without losing quality.
+
+Minify CSS and JavaScript files: Minifying your CSS and JavaScript files can help to reduce their size and improve the loading time of your website.
+
+Use lazy loading: Lazy loading is a technique that loads only the necessary content on the page, rather than loading everything at once. This can help to reduce the loading time of your website.
+
+Use browser caching: Caching can help to reduce the loading time of your website by storing frequently accessed data in the user's browser.
+
+Reduce server response time: Server response time is the amount of time it takes for your server to respond to a request from the user's browser. You can reduce server response time by optimizing your server configuration, using a content delivery network (CDN), or upgrading to a faster web hosting plan.
+
+45) what is shallow copy and deep copy explain me with an example in JS ?
+s :
+
+In JavaScript, when you copy an object or an array, there are two types of copying: shallow copy and deep copy.
+
+A shallow copy creates a new object or array, but the values inside it are still references to the original object's or array's values. In other words, if you change the value of a property inside the new object or array, it will also change the value in the original object or array.
+
+A deep copy creates a completely new object or array with its own values. If you change the value of a property inside the new object or array, it will not affect the value in the original object or array.
+
+Here's an example to demonstrate the difference:
+
+// Shallow copy example
+
+let originalArray = [1, 2, [3, 4]];
+let shallowCopyArray = [...originalArray];
+
+shallowCopyArray[2][0] = 5;
+
+console.log(originalArray); // Output: [1, 2, [5, 4]]
+console.log(shallowCopyArray); // Output: [1, 2, [5, 4]]
+
+In the above example, originalArray contains an array with three values: the numbers 1 and 2, and another array with the numbers 3 and 4. We then make a shallow copy of originalArray using the spread operator (...), and assign it to shallowCopyArray.
+
+We then change the first value of the nested array inside shallowCopyArray to 5. However, because the nested array is a reference to the original array's nested array, this change also affects the original array.
+
+// Deep copy example
+
+let originalArray = [1, 2, [3, 4]];
+let deepCopyArray = JSON.parse(JSON.stringify(originalArray));
+
+deepCopyArray[2][0] = 5;
+
+console.log(originalArray); // Output: [1, 2, [3, 4]]
+console.log(deepCopyArray); // Output: [1, 2, [5, 4]]
+
+In the above example, we make a deep copy of originalArray using JSON.parse(JSON.stringify(originalArray)). This creates a new array with its own values that are not references to the original array's values.
+
+We then change the first value of the nested array inside deepCopyArray to 5. This change does not affect the original array, because deepCopyArray is a completely new array with its own values.
+
+46) write code to handle the API request and response from the the below API endpoint
+
+https://jsonplaceholder.typicode.com/todos
+
+s :Sure! Here is an example code snippet to handle the API request and response from the provided endpoint:
+
+fetch('https://jsonplaceholder.typicode.com/todos')
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Request failed with status code ' + response.status);
+    }
+  })
+  .then(data => {
+    console.log(data);
+    // Handle the response data here
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+    // Handle the error here
+  });
+
+
+using AXIOS :::::::::::::::::::::
+
+axios.get('https://jsonplaceholder.typicode.com/todos')
+  .then(response => {
+    console.log(response.data);
+    // Handle the response data here
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+    // Handle the error here
+  });
+
+Example below using Class based components :::::::::::::::
+
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      todos: []
+    };
+  }
+
+  componentDidMount() {
+    axios.get('https://jsonplaceholder.typicode.com/todos')
+      .then(response => {
+        this.setState({ todos: response.data });
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  render() {
+    const { todos } = this.state;
+    // Render the component with the updated state data here
+  }
+}
+
+Example below using functional based components :::::::::::::::
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function MyComponent() {
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    axios.get('https://jsonplaceholder.typicode.com/todos')
+      .then(response => {
+        setTodos(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  return (
+    <div>
+      {todos.map(todo => (
+        <div key={todo.id}>
+          <h3>{todo.title}</h3>
+          <p>{todo.completed ? 'Completed' : 'Not completed'}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+47) explain me the differences between map, filter and reduce methods with an example  !
+s : In JavaScript, map, filter, and reduce are methods that are used to transform and manipulate arrays. Here are the differences between these methods:
+
+map(): The map() method is used to create a new array by applying a function to each element of an existing array.
+
+const numbers = [1, 2, 3, 4, 5];
+
+const doubledNumbers = numbers.map(function(number) {
+  return number * 2;
+});
+
+console.log(doubledNumbers); // [2, 4, 6, 8, 10]
+
+In the example above, we define an array called numbers with five elements, and use the map() method to create a new array called doubledNumbers that contains each element of numbers multiplied by 2.
+
+filter(): The filter() method is used to create a new array that contains only the elements of an existing array that meet a certain condition.
+
+const numbers = [1, 2, 3, 4, 5];
+
+const evenNumbers = numbers.filter(function(number) {
+  return number % 2 === 0;
+});
+
+console.log(evenNumbers); // [2, 4]
+
+In the example above, we define an array called numbers with five elements, and use the filter() method to create a new array called evenNumbers that contains only the even elements of numbers.
+
+reduce(): The reduce() method is used to transform an array into a single value by applying a function to each element of the array, accumulating the result along the way.
+
+const numbers = [1, 2, 3, 4, 5];
+
+const sum = numbers.reduce(function(acc, number) {
+  return acc + number;
+}, 0);
+
+console.log(sum); // 15
+
+In the example above, we define an array called numbers with five elements, and use the reduce() method to calculate the sum of all the elements. We pass an initial value of 0 as the second argument to reduce(), and the function passed to reduce() takes two arguments: an accumulator (acc) and the current element of the array (number). The function returns the sum of the accumulator and the current element, which is accumulated across all the elements of the array.
+
+In summary, map() is used to transform an array into a new array by applying a function to each element, filter() is used to create a new array that contains only the elements that meet a certain condition, and reduce() is used to transform an array into a single value by accumulating the result of applying a function to each element.
+
+
+48) give me an example code of useeffect hook
+s: import React, { useState, useEffect } from 'react';
+
+function ExampleComponent(props) {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+        const json = await response.json();
+        setData(json);
+      } catch (error) {
+        setError(error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  } else if (!data) {
+    return <div>Loading...</div>;
+  } else {
+    return (
+      <div>
+        <h1>{data.title}</h1>
+        <p>{data.completed ? 'Completed' : 'Not completed'}</p>
+      </div>
+    );
+  }
+}
+
+In this example, the useEffect hook is used to fetch data from a remote API endpoint using fetch. The effect runs only once when the component mounts (hence the empty dependency array []), and updates the data state with the fetched data or the error state if an error occurs during the fetch.
+
+The component then conditionally renders either an error message, a loading message, or the fetched data based on the current state values.
+
+49) give me the list of events in JS 
+s: 
+Here's a list of some of the commonly used events in JavaScript:
+
+click - triggered when an element is clicked
+dblclick - triggered when an element is double-clicked
+mousedown - triggered when the mouse button is pressed down over an element
+mouseup - triggered when the mouse button is released over an element
+mousemove - triggered when the mouse is moved over an element
+mouseover - triggered when the mouse pointer enters an element
+mouseout - triggered when the mouse pointer leaves an element
+keydown - triggered when a key is pressed down
+keyup - triggered when a key is released
+keypress - triggered when a key is pressed down and released
+load - triggered when a web page or an image has finished loading
+unload - triggered when a web page is unloaded or closed
+resize - triggered when the browser window is resized
+scroll - triggered when the user scrolls the web page
+focus - triggered when an element receives focus
+blur - triggered when an element loses focus
+submit - triggered when a form is submitted
+reset - triggered when a form is reset
+change - triggered when the value of an input element changes
+select - triggered when the user selects text in an input element
+contextmenu - triggered when the user right-clicks on an element
+You can use these events to execute JavaScript code when certain actions are performed by the user, such as clicking a button, submitting a form, or scrolling the web page.
+
+50) give me the list of event listeners and event handlers in javascript ?
+s : Here's a list of some of the commonly used event listeners and event handlers in JavaScript:
+
+Event Listeners:
+
+click - triggered when an element is clicked
+submit - triggered when a form is submitted
+change - triggered when the value of an input element changes
+keydown - triggered when a key is pressed down
+keyup - triggered when a key is released
+mousemove - triggered when the mouse is moved over an element
+mouseover - triggered when the mouse pointer enters an element
+mouseout - triggered when the mouse pointer leaves an element
+load - triggered when a web page or an image has finished loading
+resize - triggered when the browser window is resized
+scroll - triggered when the user scrolls the web page
+
+Event Handlers:
+
+addEventListener - attaches an event listener to an element
+removeEventListener - removes an event listener from an element
+preventDefault - prevents the default action of an event
+stopPropagation - stops the propagation of an event to parent elements
+target - returns the element that triggered the event
+currentTarget - returns the element that the event listener is attached to
+event.type - returns the type of the event
+event.keyCode - returns the key code of the key that was pressed (for keyboard events)
+event.clientX - returns the horizontal coordinate of the mouse pointer relative to the window
+event.clientY - returns the vertical coordinate of the mouse pointer relative to the window
+event.pageX - returns the horizontal coordinate of the mouse pointer relative to the document
+event.pageY - returns the vertical coordinate of the mouse pointer relative to the document
+event.target.value - returns the value of an input element that triggered the event (for input events)
+event.preventDefault() - cancels the default action of the event (for example, prevents a form from being submitted)
+
+51) what is closure with an example
+s:In programming, a closure is a combination of a function (or method) and a reference to its surrounding state (the "lexical environment") in which it was created. The closure "closes" over the variables in the lexical environment, which means that it retains access to them even after the environment has gone out of scope or the function has returned.
+
+function counter() {
+  let count = 0;
+  
+  function increment() {
+    count++;
+    console.log(count);
+  }
+  
+  return increment;
+}
+
+const myCounter = counter();
+myCounter(); // prints 1
+myCounter(); // prints 2
+myCounter(); // prints 3
+
+In this example, counter() returns a function increment() that increments a local variable count and logs its value to the console. When we call counter(), it creates a new lexical environment with a local variable count initialized to zero and returns increment(), which has access to that variable through closure. We assign the result of counter() to a variable myCounter and call it three times, each time incrementing the count variable and logging its value. Because myCounter retains access to the count variable through closure, the value of count persists across multiple calls to myCounter().
+
+52) what is callback function with an example
+s : A callback function is a function that is passed as an argument to another function and is executed by that function. The callback function is used to achieve a specific behavior that needs to be executed after the completion of another function.
+
+Here is an example of a callback function in JavaScript:
+
+function sendMessage(message, callback) {
+  console.log("Sending message: " + message);
+  callback();
+}
+
+function logMessageSent() {
+  console.log("Message sent!");
+}
+
+sendMessage("Hello World", logMessageSent);
+
+In this example, sendMessage is a function that takes two arguments: message and callback. The sendMessage function logs a message to the console indicating that a message is being sent, then calls the callback function.
+
+The logMessageSent function is the callback function that is passed as the second argument to the sendMessage function. This function logs a message to the console indicating that the message has been sent.
+
+When sendMessage is called with the message "Hello World" and the logMessageSent function as the callback function, the following output is logged to the console:
+
+Sending message: Hello World
+Message sent!
+
+As you can see, the logMessageSent function is executed after the completion of the sendMessage function. This is an example of how a callback function can be used to achieve a specific behavior that needs to be executed after the completion of another function.
+
+53) what is async/await, tell me the difference between promises and async await
+S: async/await is a way to handle asynchronous code in JavaScript. It is built on top of promises and provides a more synchronous way of writing asynchronous code.
+
+With async/await, you can write asynchronous code that looks like synchronous code, making it easier to read and understand. Here's an example:
+
+async function fetchData() {
+  const response = await fetch('https://example.com/data');
+  const data = await response.json();
+  return data;
+}
+
+In this example, the fetchData function is marked as async. This means that it returns a promise that will eventually resolve to the data fetched from the https://example.com/data URL.
+
+Inside the function, we use the await keyword to wait for the promise to resolve before moving on to the next line of code. This makes the code look like synchronous code, even though it is asynchronous under the hood.
+
+Now, let's talk about the difference between promises and async/await.
+
+Promises provide a way to handle asynchronous code by chaining methods such as .then() and .catch() to handle the resolved and rejected states of the promise, respectively. Here's an example:
+
+function fetchData() {
+  return fetch('https://example.com/data')
+    .then(response => response.json())
+    .catch(error => console.error(error));
+}
+
+In this example, the fetchData function returns a promise that will eventually resolve to the data fetched from the https://example.com/data URL. We chain the .then() method to parse the response as JSON, and the .catch() method to handle any errors that may occur.
+
+async/await provides a more synchronous way of writing asynchronous code by using the await keyword to wait for promises to resolve. This can make the code easier to read and understand, especially for those who are more familiar with synchronous code. However, async/await can also make it easier to introduce errors if not used correctly.
+
+In summary, async/await is a way to handle asynchronous code in JavaScript that provides a more synchronous way of writing code. It is built on top of promises and can make code easier to read and understand. However, it can also introduce errors if not used correctly. Promises provide a more traditional way of handling asynchronous code and are still widely used in JavaScript.
+
+54) how to create a simple React component and render it to the page:
+S: 
+First, go to https://codesandbox.io/ and create a new React project.
+In the src folder, create a new file called MyComponent.js.
+In MyComponent.js, create a simple React component like this:
+
+import React from "react";
+
+function MyComponent() {
+  return <h1>Hello World!</h1>;
+}
+
+export default MyComponent;
+
+This component just returns a heading that says "Hello World!".
+
+Now, let's render this component to the page. Open the index.js file in the src folder and replace the existing code with this:
+
+import React from "react";
+import ReactDOM from "react-dom";
+import MyComponent from "./MyComponent";
+
+ReactDOM.render(<MyComponent />, document.getElementById("root"));
+
+This code imports our MyComponent component and renders it to the root element of the HTML document.
+
+Finally, save your changes and you should see "Hello World!" rendered to the page in the preview window on the right side of the screen.
+That's it! You've just created a simple React component and rendered it to the page using ReactDOM.render().
+
+55)Write code to call the API endpoint using “fetch” or “Axios” from the second component to the first component which is rendered in the app component.
+
+s:Sure, here's an example of how to call an API endpoint using fetch() or Axios from the second component to the first component, which is rendered in the app component:
+
+In the MyComponent.js file that we created earlier, let's modify the component to fetch some data from an API endpoint:
+
+import React, { useState, useEffect } from "react";
+
+function MyComponent() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch("https://api.example.com/data")
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error(error));
+  }, []);
+
+  return (
+    <div>
+      {data ? (
+        <ul>
+          {data.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>Loading data...</p>
+      )}
+    </div>
+  );
+}
+
+export default MyComponent;
+
+In this example, we use the useState hook to create a state variable called data, which will hold the data fetched from the API. We also use the useEffect hook to fetch the data from the API endpoint when the component is mounted.
+
+We use the fetch() function to make the API request and handle the response using the .then() method. If an error occurs, we handle it using the .catch() method.
+
+The fetched data is then rendered to the page using conditional rendering. If data is not null, we render an unordered list of the data. If data is null, we render a "Loading data..." message.
+
+Now, let's create a second component that will render the MyComponent component and pass any data that it fetches from the API as props:
+
+import React from "react";
+import MyComponent from "./MyComponent";
+
+function SecondComponent() {
+  return (
+    <div>
+      <h2>Second Component</h2>
+      <MyComponent />
+    </div>
+  );
+}
+
+export default SecondComponent;
+
+In this example, we import the MyComponent component and render it inside the SecondComponent component. Any data that is fetched by MyComponent will be passed down to SecondComponent as props.
+
+Finally, in the App.js file (or wherever your root component is defined), render the SecondComponent component:
+
+import React from "react";
+import SecondComponent from "./SecondComponent";
+
+function App() {
+  return (
+    <div>
+      <h1>First Component</h1>
+      <SecondComponent />
+    </div>
+  );
+}
+
+export default App;
+
+In this example, we import the SecondComponent component and render it inside the App component. Any data that is fetched by MyComponent will be passed down to SecondComponent, which will then be rendered inside App.
+
+That's it! You've just called an API endpoint using fetch() or Axios from a component and passed the data down as props to another component that is rendered inside the app component.
+
+56) how to use componentWillUnmount() in the functional component
+s: In functional components, you can use the useEffect hook to mimic the componentWillUnmount() lifecycle method of class components. Here's an example of how to use useEffect to clean up resources when a functional component is unmounted:
+
+import React, { useEffect } from "react";
+
+function MyComponent() {
+  useEffect(() => {
+    // This code will run when the component is mounted
+
+    // Return a cleanup function to be called when the component is unmounted
+    return () => {
+      // This code will run when the component is unmounted
+      console.log("Component unmounted");
+    };
+  }, []);
+
+  return <h1>Hello World!</h1>;
+}
+
+export default MyComponent;
+
+In this example, we use the useEffect hook to run some code when the component is mounted. We also return a cleanup function that will be called when the component is unmounted.
+
+In the cleanup function, you can do things like canceling network requests, removing event listeners, or cleaning up any other resources that were created in the useEffect function.
+
+When the component is unmounted, React will automatically call the cleanup function that was returned from the useEffect hook.
+
+Note that the empty dependency array [] as the second argument of useEffect() ensures that the effect runs only once, when the component mounts. If you pass a dependency array with a value or a variable inside, then the effect will run each time the value or variable changes. If you omit the second argument, the effect will run on every re-render of the component.
+
+57)explain useeffect with dependency array
+s :
+In React, useEffect is a hook that allows you to manage lifecycle events in functional components. The useEffect hook takes two arguments:
+
+A function that will be executed when the component is mounted, updated, or unmounted.
+An optional dependency array that contains the values or variables that the useEffect hook should watch for changes.
+When the component is mounted, the function passed to useEffect is called. If the dependency array is provided, the function will be called again when any of the values or variables in the array change. If no dependency array is provided, the function will be called on every re-render of the component.
+
+Here's an example of how to use useEffect with a dependency array:
+
+import React, { useState, useEffect } from "react";
+
+function MyComponent() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log(`Count is now ${count}`);
+  }, [count]);
+
+  function handleClick() {
+    setCount(count + 1);
+  }
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={handleClick}>Increment Count</button>
+    </div>
+  );
+}
+
+export default MyComponent;
+
+In this example, we use the useState hook to create a state variable called count, which is initially set to 0. We also use the useEffect hook to log a message to the console when the value of count changes.
+
+The useEffect hook takes an array as its second argument that contains count. This means that the effect will be re-run whenever count changes.
+
+When the handleClick function is called (when the button is clicked), the setCount function updates the value of count and triggers a re-render of the component. This, in turn, triggers the useEffect hook to log the new value of count to the console.
+
+If we did not pass [count] as the second argument of useEffect, the console.log statement would be called on every re-render of the component, regardless of whether count has changed. Passing [count] ensures that the effect only runs when count changes.
+
+Note that you can also pass an empty array ([]) as the second argument of useEffect if you want the effect to only run once when the component mounts, and not re-run on subsequent updates.
+
+58) explain passby value & referece example implementation in js ?
+s: Sure, here's an example implementation in JavaScript to illustrate the difference between pass-by-value and pass-by-reference:
+
+Pass-by-value example:
+
+function changeValue(x) {
+  x = 2;
+  console.log("Inside function: x =", x);
+}
+
+// Main program
+let a = 3;
+console.log("Before function call: a =", a);
+changeValue(a);
+console.log("After function call: a =", a);
+
+Output:
+Before function call: a = 3
+Inside function: x = 2
+After function call: a = 3
+
+In this example, a is passed to the changeValue() function as an argument. However, since JavaScript uses pass-by-value, a copy of the value of a (which is 3) is created and passed to the function. Therefore, any changes made to x inside the function do not affect the original variable a.
+
+Pass-by-reference example:
+function changeArray(arr) {
+  arr.push(4);
+  console.log("Inside function: arr =", arr);
+}
+
+// Main program
+let b = [1, 2, 3];
+console.log("Before function call: b =", b);
+changeArray(b);
+console.log("After function call: b =", b);
+
+Output:
+Before function call: b = [1, 2, 3]
+Inside function: arr = [1, 2, 3, 4]
+After function call: b = [1, 2, 3, 4]
+
+In this example, b is passed to the changeArray() function as an argument. Since JavaScript uses pass-by-reference for objects (including arrays), a reference to the original array b is passed to the function. Therefore, any changes made to arr inside the function affect the original array b. In this case, a new element 4 is added to the array.
+
+59) what is bundling in JS ?
+s: Bundling in JavaScript refers to the process of combining multiple JavaScript files into a single file (the bundle) that can be served to the browser. This can be done manually or using a bundling tool.
+
+The main benefit of bundling is to reduce the number of HTTP requests made by the browser when loading a web page, which can improve performance. Additionally, bundling can also help with code organization and sharing code between multiple JavaScript files.
+
+There are several bundling tools available in the JavaScript ecosystem, including:
+
+Webpack: a popular bundler that can handle a variety of file types and has a large ecosystem of plugins and loaders for customization.
+Rollup: a lightweight bundler focused on creating small, optimized bundles for libraries and modules.
+Parcel: a zero-config bundler that can handle a variety of file types and has built-in support for common features like code splitting and hot module replacement.
+To create a bundle using a bundler like Webpack, you typically need to define an entry point (the main file that imports other modules) and a configuration file that specifies how the bundler should process the code. For example, here's a simple configuration file for Webpack that defines
+
+60) what is coercion js ?
+s : In JavaScript, coercion refers to the automatic type conversion that happens when values of different types are used together in an expression. JavaScript can automatically convert values from one type to another based on certain rules, which can sometimes lead to unexpected behavior if not understood properly.
+
+There are two types of coercion in JavaScript: implicit coercion and explicit coercion.
+
+Implicit Coercion: This happens when JavaScript automatically converts a value from one type to another without the programmer explicitly telling it to do so. This is often done when values of different types are used together in an expression. For example:
+
+const num = 5;
+const str = "10";
+const result = num + str;
+console.log(result); // "510"
+
+In this example, JavaScript automatically converts the number 5 to a string and concatenates it with the string "10" to create the result "510".
+
+Explicit Coercion: This happens when the programmer explicitly converts a value
+
+61) exaplin what are generator in js ?
+s: In JavaScript, a generator is a function that can be paused and resumed during its execution, allowing for a more flexible and efficient way of working with collections and data streams.
+
+Generators are defined using the function* syntax and use the yield keyword to pause the execution and return a value to the caller. The generator function can be resumed from the point where it was paused by calling its next() method.
+
+Here is an example of a generator function that generates an infinite sequence of Fibonacci numbers:
+
+function* fibonacci() {
+  let current = 0, next = 1;
+  while (true) {
+    yield current;
+    [current, next] = [next, current + next];
+  }
+}
+
+const gen = fibonacci();
+for (let i = 0; i < 10; i++) {
+  console.log(gen.next().value);
+}
+
+In this example, the fibonacci() generator function defines an infinite loop that yields the current Fibonacci number using the yield keyword. The next() method is called on the generator object gen to get the next value in the sequence.
+
+The for loop in the example prints the first 10 Fibonacci numbers by calling gen.next().value 10 times. The value property of the returned object contains the value that was yielded by the generator function.
+
+Generators can be used to simplify and optimize many common programming tasks, such as iterating over large datasets, implementing custom iterators, and managing asynchronous code.
+
+61) how do I resume a generator function ?
+s: In JavaScript, you can resume a generator function by calling its next() method. The next() method is used to advance the generator to the next yield statement and return an object with two properties:
+
+value: The value that was yielded by the generator function.
+done: A boolean value indicating whether the generator has completed its execution.
+Here is an example of how to use the next() method to resume a generator function:
+
+function* myGenerator() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+const gen = myGenerator();
+console.log(gen.next()); // { value: 1, done: false }
+console.log(gen.next());
+
+62) explain difference between async vs generator ?
+s: Async functions and generator functions are both powerful features of JavaScript that enable developers to write asynchronous code in a more readable and manageable way. However, they serve different purposes and have different syntax and capabilities.
+
+Async functions are a way to write asynchronous code that looks and behaves like synchronous code. They use the async keyword to indicate that the function returns a promise and the await keyword to pause the execution of the function until the promise is resolved or rejected.
+
+Here is an example of an async function that fetches data from a remote API:
+
+async function fetchData() {
+  const response = await fetch('https://api.example.com/data');
+  const data = await response.json();
+  return data;
+}
+
+Generator functions, on the other hand, are a way to write iterable functions that can be paused and resumed at any time. They use the function* syntax to indicate that the function is a generator and the yield keyword to pause the execution of the function and return a value to the caller.
+
+Here is an example of a generator function that generates an infinite sequence of random numbers:
+
+function* randomNumbers() {
+  while (true) {
+    yield Math.random();
+  }
+}
+
+While both async functions and generator functions can be used to write asynchronous code, async functions are typically used to handle async/await style programming, while generator functions are used to create custom iterators and handle more complex control flows.
+
+In general, async functions are more commonly used in modern JavaScript development, while generator functions are a more niche feature that can be very useful in certain situations.
+
+63) implementation of async vs generator ?
+s : Sure, here's an example of how to implement an async function and a generator function that accomplish the same task of fetching data from an API:
+
+// Async function example
+async function fetchDataAsync() {
+  try {
+    const response = await fetch('https://api.example.com/data');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Generator function example
+function* fetchDataGenerator() {
+  try {
+    const response = yield fetch('https://api.example.com/data');
+    const data = yield response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Usage example for both functions
+(async function() {
+  // Using the async function
+  const dataAsync = await fetchDataAsync();
+  console.log(dataAsync);
+  
+  // Using the generator function
+
+64) why generators over async ?
+While both async functions and generator functions can be used to write asynchronous code, there are some situations where generator functions may be more useful or appropriate than async functions. Here are some reasons why you might choose to use generator functions over async functions:
+
+Custom Iterators: Generator functions are often used to create custom iterators that can be used to iterate over complex data structures or implement custom traversal logic. With a generator function,
+
+65) difference between const and object.freeze ?
+s: const is a keyword in JavaScript that is used to declare a variable whose value cannot be reassigned. Once a const variable is assigned a value, it cannot be changed or re-assigned to a new value.
+
+Object.freeze() is a method in JavaScript that can be used to prevent the modification of an object by making it immutable. This means that the object's properties cannot be added, deleted or changed.
+
+While both const and Object.freeze() can be used to create immutable data in JavaScript, they have different levels of immutability and protection.
+
+Here are some key differences between const and Object.freeze():
+
+Level of Immutability:
+
+const: const only makes the variable assignment immutable. It means that the variable cannot be reassigned to a new value. However, the properties of an object or an array declared with const can be added, deleted, or modified.
+Object.freeze(): Object.freeze() makes the entire object immutable. It means that the properties of an object cannot be added, deleted, or modified after the object has been frozen.
+Nested Objects and Arrays:
+
+const: If a variable declared with const holds a reference to an object or an array, the properties of the object or array can still be modified.
+Object.freeze(): If an object is frozen using Object.freeze(), any nested objects or arrays within that object will also be frozen recursively.
+In summary, const and Object.freeze() provide different levels of immutability and protection. While const is useful for preventing variable reassignment, Object.freeze() is useful for creating deeply immutable objects that cannot be modified or manipulated.
+
+66) how do I replace already cached db?
+s: To replace an existing cached database in IndexedDB, you can follow these steps:
+
+Open a connection to the existing database using indexedDB.open().
+If the connection is successful, close the connection using db.close().
+Delete the existing database using indexedDB.deleteDatabase().
+Open a new connection to the database using indexedDB.open().
+Create a new object store in the new database using db.createObjectStore().
+Add data to the new database using store.put() or store.add().
+
+EXAMPLE :
+
+// Open a connection to the existing database
+var request = indexedDB.open('myDatabase', 1);
+
+// When the connection is successful, delete the existing database
+request.onsuccess = function(event) {
+  var db = event.target.result;
+  db.close(); // Close the connection to the existing database
+  indexedDB.deleteDatabase('myDatabase'); // Delete the existing database
+
+  // Open a new connection to the database
+  var newRequest = indexedDB.open('myDatabase', 1);
+
+  // Create a new object store in the new database
+  newRequest.onupgradeneeded = function(event) {
+    var db = event.target.result;
+    var store = db.createObjectStore('myObjectStore', { keyPath: 'id' });
+    // Add indexes or other options to the object store if necessary
+  };
+
+  // When the new database is ready, add data to it
+  newRequest.onsuccess = function(event) {
+    var db = event.target.result;
+    var store = db.transaction(['myObjectStore'], 'readwrite').objectStore('myObjectStore');
+    // Add data to the new database using store.put() or store.add()
+  };
+};
+
+In this example, we open a connection to the existing database using indexedDB.open() and wait for the connection to be successful. When the connection is successful, we close the connection to the existing database using db.close() and delete the existing database using indexedDB.deleteDatabase().
+
+Then, we open a new connection to the database using indexedDB.open() and wait for the onupgradeneeded event to be fired. In the event handler, we create a new object store in the new database using db.createObjectStore().
+
+Finally, when the new database is ready, we add data to it by opening a transaction on the object store using db.transaction(), accessing the object store using transaction.objectStore(), and adding data to the object store using store.put() or store.add().
+
+67) how do re-write already cached db?
+S: If you want to rewrite an existing cached database in IndexedDB, you can use the indexedDB.deleteDatabase() method to delete the old database and then create a new one with the same name.
+
+Here is an example:
+
+// Open a connection to the existing database
+var request = indexedDB.open('myDatabase', 1);
+
+// Delete the existing database if it exists
+request.onupgradeneeded = function(event) {
+  var db = event.target.result;
+  db.close(); // close the existing database
+  indexedDB.deleteDatabase('myDatabase'); // delete the existing database
+};
+
+// Create a new database with the same name
+request.onsuccess = function(event) {
+  var db = event.target.result;
+  var store = db.createObjectStore('myObjectStore');
+  // Add data to the new database...
+};
+
+In this example, the indexedDB.open() method is used to open a connection to the existing database. If the onupgradeneeded event is fired, it means that the database schema needs to be updated. In this case, we close the existing database and delete it using the indexedDB.deleteDatabase() method.
+
+After the old database is deleted, the onsuccess event is fired, and we can create a new database with the same name using the createObjectStore() method.
+
+It's worth noting that deleting a database will also delete all the data stored in that database. So, if you need to keep some data from the old database.
+
+68) WHAT IS THE use of indexed db ?
+S: IndexedDB is a client-side storage mechanism that enables web developers to store and retrieve structured data within a user's browser. It is a NoSQL database that allows for efficient storage and retrieval of data, particularly for web applications that need to store large amounts of data locally.
+
+Here are some use cases for IndexedDB:
+
+Offline Data Storage: One of the primary use cases for IndexedDB is to store data offline so that web applications can continue to function even when the user is not connected to the internet. This can be particularly useful for mobile applications or for applications that need to work in areas with poor internet connectivity.
+
+Caching Data: IndexedDB can be used to cache data that is frequently used by a web application. This can help reduce the number of requests made to the server, improving the performance of the web application and reducing network traffic.
+
+Data Synchronization: IndexedDB can be used to synchronize data between the client and server. This can be useful for web applications that need to work with data that is frequently updated on the server, such as social media or messaging applications.
+
+Storing User Preferences: IndexedDB can be used to store user preferences and settings within a web application. This can provide a more personalized experience for the user and can help improve the usability of the web application.
+
+Overall, IndexedDB is a powerful storage mechanism that enables web developers to build more robust and responsive web applications that can work offline, cache data, and synchronize data between the client and server.
+
+69) what are the events of web workers ?
+s: Web Workers have a set of events that can be used to monitor the worker's state and to communicate between the worker thread and the main thread of the web application. These events include:
+
+onmessage: This event is fired when a message is received from the main thread of the web application. It can be used to receive data and instructions from the main thread.
+
+onerror: This event is fired when an error occurs in the worker thread. It can be used to handle and report errors that occur during the execution of the worker.
+
+onmessageerror: This event is fired when an error occurs in the message passed from the main thread. It can be used to handle and report errors that occur during message passing.
+
+onterminate: This event is fired when the worker is terminated using the terminate() method. It can be used to perform any cleanup or finalization tasks before the worker is terminated.
+
+To handle these events in the worker thread, you can define event listeners using the addEventListener() method. For example, to handle the onmessage event, you can define the following event listener:
+
+self.addEventListener('message', function(event) {
+  // handle the message here
+});
+
+Similarly, to handle the onerror event, you can define the following event listener:
+
+self.addEventListener('error', function(event) {
+  // handle the error here
+});
+
+69) web workers ?
+s: Web Workers are a JavaScript feature that enables web developers to execute long-running scripts in the background without blocking the user interface (UI) of a web application. They allow developers to offload computationally expensive or time-consuming tasks to separate worker threads, which run in parallel with the main thread of the web application. This can improve the performance and responsiveness of the web application.
+
+Web Workers operate within a separate global context, and they have no access to the UI of the web application. This means that they cannot manipulate the DOM directly, and they cannot access certain JavaScript objects such as the window object. Instead, they communicate with the main thread of the web application using a message passing system.
+
+Web Workers can be created using the Worker constructor in JavaScript, and they can be terminated using the terminate() method. When a web worker is created, it is initialized with a JavaScript file that defines the code to be executed in the worker thread. The worker thread can then run in the background while the main thread of the web application continues to respond to user input and update the UI.
+
+Web Workers are especially useful for tasks that involve heavy computation, such as image processing or data analysis. By offloading these tasks to a separate worker thread, the web application can remain responsive and continue to provide a good user experience.
+
+70) can we make web accessible usig html semantics ?
+s: Yes, using HTML semantics can help make web pages more accessible to users with disabilities. By using semantic HTML to structure content and convey meaning, web developers can create web pages that are more easily understood by assistive technologies such as screen readers and braille displays. This can make it easier for people with disabilities, such as visual impairments, to access and navigate web content.
+
+For example, using the <header> element to define the header of a web page can help screen readers understand that the content within that element is the main heading for the page. Similarly, using the <nav> element to define navigation links can help screen readers understand that the content within that element is a list of links that allow users to navigate to different parts of the website.
+
+Other examples of semantic HTML elements that can improve accessibility include <article>, <section>, <aside>, and <footer>. These elements can help screen readers and other assistive technologies to understand the structure and purpose of the content on a web page, making it easier for users with disabilities to navigate and understand the content.
+
+In addition to using semantic HTML, web developers can also improve accessibility by following accessibility guidelines such as the Web Content Accessibility Guidelines (WCAG) 2.1. These guidelines provide recommendations for making web content more accessible to users with disabilities, including recommendations for HTML markup, color contrast, and keyboard navigation.
+
+71) what are html semantics?
+s: HTML semantics refer to the use of specific HTML elements to give meaning and structure to the content on a web page. Semantics in HTML is about using HTML elements that convey the correct meaning or purpose of the content, rather than using generic or non-specific elements.
+
+Using semantic HTML is beneficial for several reasons, including:
+
+Accessibility: Semantic HTML helps assistive technologies, such as screen readers, to better understand the content on a web page, making it more accessible to people with disabilities.
+
+Search Engine Optimization (SEO): Using semantic HTML can help search engines understand the content of a web page, which can improve the page's visibility in search results.
+
+Maintainability: Semantic HTML makes it easier to maintain and update a web page because the structure and purpose of the content is more clearly defined.
+
+Examples of semantic HTML elements include:
+
+<header>: Used to define the header of a section or page.
+<nav>: Used to define a navigation section.
+<article>: Used to define a self-contained piece of content, such as a blog post or news article.
+<section>: Used to define a section of a web page.
+<aside>: Used to define content that is not directly related to the main content, such as a sidebar or callout box.
+<footer>: Used to define the footer of a section or page.
+By using these and other semantic HTML elements, web developers can create web pages that are more accessible, maintainable, and search engine-friendly.
+
+72) Guess the output of below function?
+
+ var numOfTrees = 5;
+
+function getMoreTrees() {
+  console.log('I have this many trees: ' + numOfTrees);
+
+  var numOfTrees = 25;
+  return numOfTrees;
+}
+
+console.log('I now have this many trees: ' + getMoreTrees());
+
+s: The output of this code will be "I now have this many trees: 25".
+
+Inside the getMoreTrees function, a new variable numOfTrees is declared with a value of 25, which means it creates a new variable that shadows the outer numOfTrees variable.
+
+When the console.log statement inside the function is executed, it's actually referencing the local numOfTrees variable instead of the global numOfTrees variable, since JavaScript will first look for a variable declaration within the current scope before moving up to outer scopes.
+
+Therefore, the output of the function will be "I have this many trees: undefined" because numOfTrees has been declared but not yet initialized when the first console.log is called. And then the function returns the value of the local numOfTrees variable, which is 25, and this is logged as "I now have this many trees: 25" by the second console.log statement outside of the function.
+
+73) challenges came across frontend, challenges came across your work experience ?
+s: As a frontend developer, there are several challenges that you may encounter. Here are some of the most common challenges and how to overcome them:
+
+Browser compatibility: One of the biggest challenges in frontend development is ensuring that your code works correctly on different browsers and devices. To overcome this challenge, you need to test your code on different browsers and devices to identify and fix any compatibility issues. You can also use cross-browser testing tools such as BrowserStack or Sauce Labs to automate testing across multiple browsers.
+
+Performance optimization: Another common challenge is optimizing the performance of your web application. This can include reducing page load times, optimizing images, and minimizing the use of external libraries. To optimize performance, you can use tools such as Lighthouse or GTmetrix to analyze your web application and identify areas for improvement.
+
+Security: Security is a critical aspect of web development, and frontend developers need to be aware of common vulnerabilities such as cross-site scripting (XSS) and cross-site request forgery (CSRF). To prevent these vulnerabilities, you should always validate user input, use secure authentication and authorization mechanisms, and sanitize user input to prevent attacks.
+
+Responsive design: With the increasing use of mobile devices, it's essential to ensure that your web application is responsive and looks great on different screen sizes. To achieve responsive design, you can use CSS frameworks such as Bootstrap or Foundation or use CSS media queries to adapt your web application to different screen sizes.
+
+Accessibility: Another important aspect of frontend development is accessibility. You need to ensure that your web application is accessible to users with disabilities, such as vision or hearing impairments. To achieve accessibility, you should follow WCAG (Web Content Accessibility Guidelines) and use ARIA (Accessible Rich Internet Applications) attributes to improve the accessibility of your web application.
+
+Version control: As a frontend developer, you need to collaborate with other developers and manage changes to your codebase. Version control systems such as Git can help you manage changes to your codebase, collaborate with other developers, and track the history of your code changes.
+
+Overall, frontend development can be challenging, but by being aware of these common challenges and following best practices, you can overcome these challenges and create high-quality web applications.
+
+74) how to fix cors error ?
+s: CORS (Cross-Origin Resource Sharing) error occurs when a web page hosted on one domain tries to access resources (e.g., JavaScript, images, fonts, etc.) hosted on a different domain. CORS is a security feature of modern browsers that prevents web pages from making unauthorized requests to different domains.
+
+To fix CORS errors, you can try the following solutions:
+
+Add CORS headers to the server response: If you have control over the server, you can add the Access-Control-Allow-Origin header to the response headers. This header tells the browser that it is safe to allow cross-origin requests from the specified domain.
+For example, in Node.js, you can use the cors middleware to add the CORS headers to the response:
+
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+app.use(cors());
+
+Use a proxy server: If you cannot add the CORS headers to the server response, you can use a proxy server to forward the requests. You can set up a proxy server on the same domain as the web page and forward the requests to the different domain.
+For example, if you are using React, you can set up a proxy server by creating a setupProxy.js file in the src folder with the following code:
+
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+module.exports = function(app) {
+  app.use(
+    '/api',
+    createProxyMiddleware({
+      target: 'http://example.com',
+      changeOrigin: true,
+    })
+  );
+};
+
+This code sets up a proxy server that forwards requests to the http://example.com domain.
+
+Use JSONP: If you are making a GET request, you can use JSONP (JSON with Padding) to bypass the CORS restrictions. JSONP is a technique that allows you to make cross-domain requests by adding a script tag to the web page.
+For example, you can make a JSONP request in jQuery like this:
+
+$.ajax({
+  url: 'http://example.com/api',
+  dataType: 'jsonp',
+  success: function(data) {
+    // handle the response
+  }
+});
+
+Note that JSONP only works for GET requests and requires the server to support JSONP. It also has some security risks, so use it carefully.
+
+Use a browser extension: If you are testing a web page locally or for development purposes, you can use a browser extension like CORS Unblock or Moesif CORS to bypass the CORS restrictions temporarily.
+Note that these solutions are not exhaustive and the best solution depends on your specific use case.
+
+75) I need to call an API, a Rest API and you have to call this Rest api from a function based component and it should be called at two different scenarios like the first scenario is it should be called when the function component mounts and the second scenario is it should be called when the function component unmounts, how will you call this Rest api
+s: To call a Rest API from a function component in React and trigger it on component mount and unmount, you can use the useEffect hook provided by React.
+
+First, import the useEffect hook at the top of your file:
+
+import React, { useEffect } from 'react';
+
+Then, create your function component and define a state variable to hold the data you will receive from the API:
+
+function MyComponent() {
+  const [data, setData] = useState(null);
+
+  // useEffect hook to call API on mount and unmount
+  useEffect(() => {
+    // API call on mount
+    fetch('https://example.com/api')
+      .then(response => response.json())
+      .then(data => setData(data));
+
+    // API call on unmount
+    return () => {
+      fetch('https://example.com/api/cancel')
+        .then(response => response.json())
+        .then(data => console.log('API call cancelled'));
+    }
+  }, []);
+
+  // Render the component
+  return (
+    <div>
+      {/* Display the data received from the API */}
+      {data && <p>{data}</p>}
+    </div>
+  );
+}
+
+In the useEffect hook, the API call is made inside the function passed as the first argument. The second argument to useEffect is an array of dependencies. By passing an empty array, we are telling React to run the effect only once, on component mount.
+
+To trigger the API call on component unmount, we can return a cleanup function from the effect, as shown in the example above. This function will be called when the component unmounts, and can be used to cancel the API call or perform any other necessary cleanup.
+
+Note that in the above example, we assume that the API provides a cancel endpoint that can be used to cancel the API call if it is still ongoing when the component unmounts. If your API does not provide such an endpoint, you may need to handle the cleanup differently.
+
+76) write code to demonstrate routing inn React.js for 2 pages
+s: Sure, here's an updated example of how to set up routing for two pages in a React.js app using the React Router v6 library:
+
+First, make sure to install React Router by running npm install react-router-dom@next.
+
+Then, in your App.js file, import Routes and Route from React Router and define your routes using Route. Here's an example with two pages, HomePage and AboutPage:
+
+import { Routes, Route } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import AboutPage from './components/AboutPage';
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
+    </Routes>
+  );
+}
+
+export default App;
+
+In this example, we're using Routes to wrap our routes, which is the new way of defining routes in React Router v6. We're also using the element prop to specify the component to render for each route.
+
+Next, create HomePage.js and AboutPage.js components in the components directory. These components can be simple functional components that return some JSX, like this:
+
+import React from 'react';
+
+function HomePage() {
+  return (
+    <div>
+      <h1>Welcome to the home page!</h1>
+      <p>Here's some content for the home page.</p>
+    </div>
+  );
+}
+
+export default HomePage;
+
+import React from 'react';
+
+function AboutPage() {
+  return (
+    <div>
+      <h1>About us</h1>
+      <p>Here's some content for the about page.</p>
+    </div>
+  );
+}
+
+export default AboutPage;
+
+That's it! Now you should be able to navigate between the two pages by clicking on links with the corresponding to props, like this:
+
+import { Link } from 'react-router-dom';
+
+function Navigation() {
+  return (
+    <nav>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/about">About</Link></li>
+      </ul>
+    </nav>
+  );
+}
+
+export default Navigation;
+
+77) what is useRef explain with a code example
+s: useRef is a hook in React that provides a way to create a mutable reference that persists across renders. It allows you to access and modify a DOM node or a value without triggering a re-render of the component.
+
+Here's an example of using useRef to access and modify a DOM node:
+
+import React, { useRef } from 'react';
+
+function InputWithFocusButton() {
+  const inputRef = useRef(null);
+
+  const handleClick = () => {
+    inputRef.current.focus();
+  };
+
+  return (
+    <div>
+      <input type="text" ref={inputRef} />
+      <button onClick={handleClick}>Focus the input</button>
+    </div>
+  );
+}
+
+export default InputWithFocusButton;
+
+In this example, we're creating a inputRef using useRef(null) to create an initial value of null. We then attach this ref to the input element using the ref attribute.
+
+When the button is clicked, the handleClick function is called, which uses inputRef.current.focus() to focus the input element.
+
+Because useRef creates a mutable reference that persists across renders, we can modify the inputRef value without triggering a re-render of the component. This allows us to modify DOM nodes and values in a way that doesn't impact the component's state or trigger a re-render.
+
+
+
+78) you are building a react.js app, if the rendering part crashes in the react application in between, like something happens in between you are somehow loading some data from backend but some data is missing at the UI side  and the rendering crashes then how do you handle such situations ?
+s: When the rendering part of a React application crashes, it's important to handle the error gracefully to provide a good user experience and prevent the entire application from crashing.
+
+React provides an error boundary mechanism to handle such situations. An error boundary is a higher-order component that catches errors thrown by its children components and displays an error message instead of crashing the entire application.
+
+Here's an example of how to create an error boundary component:
+
+For class based component ////////////// :::::::::::::
+
+import React, { Component } from 'react';
+
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // log the error to an error reporting service
+    console.error(error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+
+In this example, we're creating an ErrorBoundary component that catches errors thrown by its children components. The component has three methods:
+
+constructor: Sets the initial state to hasError: false.
+getDerivedStateFromError: Updates the state to hasError: true if an error occurs.
+componentDidCatch: Logs the error to the console or an error reporting service.
+In the render method, we check the hasError state. If it's true, we display an error message. Otherwise, we render the children components.
+
+You can then wrap your components with the ErrorBoundary component to handle errors:
+
+import ErrorBoundary from './ErrorBoundary';
+import MyComponent from './MyComponent';
+
+function App() {
+  return (
+    <div>
+      <ErrorBoundary>
+        <MyComponent />
+      </ErrorBoundary>
+    </div>
+  );
+}
+
+export default App;
+
+In this example, we're wrapping MyComponent with ErrorBoundary to catch any errors thrown by MyComponent. If an error occurs, the ErrorBoundary will display an error message instead of crashing the entire application.
+
+Additionally, you can also use try-catch blocks to catch errors that occur while loading data from the backend, and handle them appropriately by displaying an error message or retrying the request.
+
+for function based componenets////////////////::::::::::::::::
+
+Yes, you can also create an error boundary as a function component in React.
+
+Here's an example of how to create an error boundary function component:
+
+import React, { useState } from 'react';
+
+function ErrorBoundary({ children }) {
+  const [hasError, setHasError] = useState(false);
+
+  function componentDidCatch(error, errorInfo) {
+    // log the error to an error reporting service
+    console.error(error, errorInfo);
+    setHasError(true);
+  }
+
+  if (hasError) {
+    return <h1>Something went wrong.</h1>;
+  }
+
+  return children;
+}
+
+export default ErrorBoundary;
+
+In this example, we're creating an ErrorBoundary function component that catches errors thrown by its children components. The component has two pieces of state:
+
+hasError: A boolean that tracks whether an error has occurred.
+The component also has a componentDidCatch function that logs the error to the console or an error reporting service and sets the hasError state to true.
+
+In the return statement, we check the hasError state. If it's true, we display an error message. Otherwise, we render the children components.
+
+You can then wrap your components with the ErrorBoundary component to handle errors:
+
+import ErrorBoundary from './ErrorBoundary';
+import MyComponent from './MyComponent';
+
+function App() {
+  return (
+    <div>
+      <ErrorBoundary>
+        <MyComponent />
+      </ErrorBoundary>
+    </div>
+  );
+}
+
+export default App;
+
+
+In this example, we're wrapping MyComponent with ErrorBoundary to catch any errors thrown by MyComponent. If an error occurs, the ErrorBoundary will display an error message instead of crashing the entire application.
+
+79) what are Native Browser event, explain me?
+s: Native browser events are events that are built into the web browser and triggered by user actions or browser actions. Examples of native browser events include click, mouseover, keydown, submit, and load.
+
+When an event is triggered in the browser, it creates an instance of a native event object, which contains information about the event, such as the type of event, the target element that triggered the event, and any data associated with the event.
+
+Native browser events can be captured and handled using JavaScript event listeners, which are functions that are executed when an event is triggered. Event listeners can be attached to any element in the HTML document using the addEventListener() method.
+
+Here's an example of how to handle a click event using a native event listener in JavaScript:
+
+const myButton = document.querySelector('button');
+
+function handleClick(event) {
+  console.log('The button was clicked.');
+}
+
+myButton.addEventListener('click', handleClick);
+
+In this example, an event listener is attached to a button element using the addEventListener() method. When the button is clicked, a native click event is triggered, which creates an instance of a MouseEvent object. The handleClick function is then executed, which logs a message to the console.
+
+It's worth noting that React uses a synthetic event system to wrap native browser events in a consistent, cross-browser way. This allows React to provide a unified interface for handling events in both the browser and server environments.
+
+80) How the data flows in the components in Reactjs ?
+s: In React, data flows unidirectionally from the parent components to their child components via properties, also known as "props". This is known as the "top-down" or "unidirectional" data flow in React.
+
+When a parent component renders, it passes data down to its child components through props. The child components can then use this data to render their own content. If the child components need to communicate with their parent component, they can do so by passing functions up through props. This allows the parent component to update its state and re-render the child components.
+
+React also uses a virtual DOM (Document Object Model) to efficiently update the actual DOM. When the state of a component changes, React creates a new virtual DOM tree, compares it to the previous one, and only updates the necessary parts of the actual DOM. This process is known as "reconciliation".
+
+Overall, the data flow in React is well-organized and easy to understand, making it a popular choice for building complex and dynamic user interfaces.
+
+React mainly follows one-way data binding or unidirectional data flow. In one-way data binding, data flows only in one direction, from the parent component to its child components, as we discussed in the previous answer.
+
+In contrast, two-way data binding allows data to flow in both directions. When the user interacts with a form element, for example, the data in the component is updated, and the component is re-rendered with the new data. However, two-way data binding can make it harder to understand the state of the application, especially as it grows in complexity. It can also make it more challenging to track changes and locate the source of bugs.
+
+React favors one-way data binding because it makes the application more predictable and easier to maintain. By following a one-way data flow, it is clear where the data is coming from, where it is being used, and how it is being updated. This makes it easier to debug and test the application, and also simplifies the design of complex UIs. Additionally, by using a virtual DOM and a unidirectional data flow, React can optimize the rendering of components and improve the performance of the application.
+
+Sure, let's take an example to illustrate the concept of one-way data binding in React.
+
+Suppose we have a parent component ParentComponent that renders a child component ChildComponent and passes a prop name to it:
+
+function ParentComponent() {
+  const name = 'John Doe';
+  return (
+    <div>
+      <ChildComponent name={name} />
+    </div>
+  );
+}
+
+function ChildComponent(props) {
+  return (
+    <div>
+      <p>{props.name}</p>
+    </div>
+  );
+}
+
+In this example, the ParentComponent defines a constant name and passes it to the ChildComponent through the name prop. The ChildComponent receives this prop as an argument and renders it in a paragraph element.
+
+Notice that the ChildComponent doesn't modify the name prop directly. It only uses the name prop to render the content, and any changes to the name prop must come from the ParentComponent. This is an example of one-way data binding, where data flows only in one direction, from the parent to the child components.
+
+Now let's say that we want to modify the name prop from the ChildComponent. To achieve this, we can define a function in the ParentComponent that updates the name state when called, and pass it down to the ChildComponent through a prop:
+
+function ParentComponent() {
+  const [name, setName] = useState('John Doe');
+  
+  function updateName() {
+    setName('Jane Doe');
+  }
+  
+  return (
+    <div>
+      <ChildComponent name={name} updateName={updateName} />
+    </div>
+  );
+}
+
+function ChildComponent(props) {
+  return (
+    <div>
+      <p>{props.name}</p>
+      <button onClick={props.updateName}>Update name</button>
+    </div>
+  );
+}
+
+
+In this updated example, we define a state variable name and a function setName using the useState hook. We also define a function updateName that sets the name state to 'Jane Doe'. We pass both the name and updateName functions as props to the ChildComponent.
+
+In the ChildComponent, we render the name prop in a paragraph element and a button that calls the updateName function when clicked.
+
+Notice that the ChildComponent can't modify the name prop directly. It can only call the updateName function, which triggers a state change in the ParentComponent, and updates the name prop. This is still an example of one-way data binding, where data flows only in one direction, from the parent to the child components.
+
+81) let, var and const are hoisted in javascript, why and give explanation
+s :
+In JavaScript, let, var, and const are all hoisted, but they behave slightly differently.
+
+Hoisting is a JavaScript mechanism where variables and function declarations are moved to the top of their scope before code execution. This means that even if you declare a variable or function later in your code, it will be treated as if it had been declared at the beginning of the scope.
+
+However, it's important to note that only the declaration of the variable is hoisted, not the initialization. This means that if you try to access a variable before it has been declared, you will get a ReferenceError.
+
+Now let's look at how each type of variable is hoisted in JavaScript:
+
+var: When you declare a variable with var, its declaration is hoisted to the top of the scope, but its initialization remains in place. This means that you can access the variable before it has been assigned a value, and it will have a value of undefined.
+
+console.log(myVar); // undefined
+var myVar = 1;
+
+let and const: When you declare a variable with let or const, its declaration is also hoisted to the top of the scope, but unlike var, its initialization is not hoisted. This means that you cannot access the variable before it has been assigned a value, and trying to do so will result in a ReferenceError.
+
+console.log(myLet); // ReferenceError: Cannot access 'myLet' before initialization
+let myLet = 1;
+
+console.log(myConst); // ReferenceError: Cannot access 'myConst' before initialization
+const myConst = 1;
+
+In summary, all three types of variables (let, var, and const) are hoisted in JavaScript, but they behave slightly differently. var declarations are hoisted and initialized to undefined, while let and const declarations are hoisted but not initialized, and trying to access them before they have been assigned a value will result in a ReferenceError.
+
+82) What is the difference between undefined and null in JavaScript?
+s: undefined is a variable that has been declared but has not been assigned a value. It is a type in JavaScript that represents a lack of value. null is also a value that represents a lack of value, but it is an explicit assignment that is used to indicate that a variable has no value.
+
+let x;
+console.log(x); // undefined
+
+let y = null;
+console.log(y); // null
+
+83) guess the output ?
+s : 
+var x = 1;
+let y = 2;
+const z = 3;
+
+function foo() {
+  var x = 4;
+  let y = 5;
+  const z = 6;
+  console.log(x, y, z);
+}
+
+foo(); // 4 5 6
+console.log(x, y, z); // 1 2 3
+
+84) How do you check if a variable is an array in JavaScript?
+s: You can check if a variable is an array in JavaScript by using the Array.isArray() method.
+
+Example:
+const arr = [1, 2, 3];
+console.log(Array.isArray(arr)); // true
+
+const obj = { a: 1, b: 2, c: 3 };
+console.log(Array.isArray(obj)); // false
+
+85) Guess the output
+
+for (var i = 0; i < 5; i++) {
+  setTimeout(function() {
+    console.log(i);
+  }, 1000);
+}
+
+s: The main difference is scoping rules. Variables declared by var keyword are scoped to the immediate function body (hence the function scope) while let variables are scoped to the immediate enclosing block denoted by { } (hence the block scope).
+So, in summary, var is referring to the same variable address. But, as let is blocked scope (according to the quote above), every callback in setTimeout() will make 'i' have a different value then the previous one.
+
+see Stackoverflow for more Examples and explanation : https://stackoverflow.com/questions/71598136/not-able-to-understand-the-output-of-this-for-loop-in-js
+
+86) guess the output ?
+s : var x = 1;
+function foo() {
+  console.log(x);
+  var x = 2;
+}
+foo();  //undefined
+
+89) JavaScript is single threaded or multi threaded and it is syncronous or Asynchronous ?
+s: JavaScript is a single threaded and syncronous language.
+
+90) what is event loop in js ?
+s: https://dev.to/lydiahallie/javascript-visualized-event-loop-3dif
+
+91) what is the difference between position relative and absolute in css ?
+s: position: relative positions an element relative to its normal position in the document flow, while position: absolute positions an element relative to its closest positioned ancestor or the initial containing block and removes it from the document flow.
+
+92) The default flex-direction value in CSS ?
+s: The default flex-direction value in CSS is row. This means that the flex items inside a flex container are laid out in a horizontal row, from left to right.
+
+93) what is the difference between flexbox and grid ?
+s: 
+Flexbox and Grid are two different CSS layout modules that have different use cases and features. Here are the main differences between Flexbox and Grid:
+
+Axis:
+Flexbox is a one-dimensional layout module, which means it operates along a single axis (either horizontally or vertically), whereas Grid is a two-dimensional layout module that can handle both rows and columns.
+
+Alignment:
+Flexbox provides powerful alignment capabilities for its one-dimensional axis, allowing you to easily align items vertically or horizontally, distribute space between items, and control the order of elements. Grid provides similar alignment capabilities for its two-dimensional layout, allowing you to create complex grid layouts with precise control over spacing and placement of items.
+
+Structure:
+Flexbox is primarily designed for laying out items within a single row or column, whereas Grid is designed to handle complex, multi-dimensional layouts that can include rows, columns, and nested grids.
+
+Complexity:
+Flexbox is generally easier to learn and use, making it a good choice for simple layouts, while Grid can be more complex and require more planning and skill to use effectively.
+
+Support:
+Both Flexbox and Grid are well-supported by modern browsers, although some older browsers may not support all features of these modules. However, Flexbox has been around longer and is more widely supported in older browsers.
+
+Overall, Flexbox and Grid are both powerful tools for creating modern, responsive layouts, and the choice between them depends on the specific needs of your layout and the level of complexity you want to achieve.
+
+94) what is justify-content ?
+s: justify-content aligns items on the main axis. the default is flex-start.
+
+95) what is align-items ?
+s:  we can align items on the cross axis using align items. default is align-items is set to stretch, which stretches the items to fill the cross axis.
+
+96) Flex-wrap ? : by default flex-wrap is set to no-wrap. whenw e set Flex-wrap : nowrap or when we use flex-wrap, a new property called 
+align-content is unlocked.
+
+97) explain me about css box model ?
+s : The CSS box model is a fundamental concept in web design and describes how elements in HTML are represented as rectangular boxes on a web page. Each box consists of four components:
+
+Content: The area inside the box where the actual content, such as text or images, is displayed.
+Padding: The space between the content and the border of the box. Padding is transparent by default, but it can be given a background color or image.
+Border: The line that surrounds the padding and content of the box. Borders can be styled with different colors, widths, and styles.
+Margin: The space outside the border, which separates the box from other elements on the page. Like padding, margin is transparent by default, but it can also be given a background color or image.
+Together, these components make up the CSS box model. The total width and height of an element is calculated by adding the content, padding, and border dimensions together. The margin is not included in this calculation, as it represents the space outside the box.
+
+The box model is important for web designers because it affects how elements are positioned and how they interact with other elements on the page. Understanding the box model can help designers create more effective layouts and troubleshoot issues related to element positioning and sizing.
+
+98) is everything in css a box ? 
+s : In CSS, almost everything is considered as a box, including text, images, and other HTML elements. This is because each element is represented as a rectangular box on the web page, as per the CSS box model. The content of an element is placed inside the box, while the padding, border, and margin are added around it.
+
+Even if an element has no visible content, such as an empty div, it will still be rendered as a box. In fact, CSS properties are used to control the dimensions, position, and styling of these boxes, regardless of whether they contain content or not.
+
+However, there are some exceptions to this rule, such as the pseudo-elements (::before and ::after) and some CSS properties that do not apply to boxes, such as the font-size property. Overall, though, the majority of elements in CSS are treated as boxes.
+
+99) What is Event Loop ? is event loop a run time model & why ? 
+s : Yes, the event loop is a runtime model that describes how asynchronous code is executed in JavaScript. It is a mechanism that allows JavaScript to handle non-blocking I/O operations, such as network requests or file system access, while continuing to execute other code.
+
+The event loop runs continuously in the background, monitoring the execution stack and the message queue. When the execution stack is empty, it retrieves the first message from the queue and pushes it onto the stack to be executed. This process repeats continuously, allowing asynchronous code to be executed in a non-blocking way.
+
+The event loop is a fundamental concept in JavaScript and is part of the JavaScript runtime environment, along with the execution stack, heap, and other components. Understanding how the event loop works is important for writing efficient and effective JavaScript code that can handle asynchronous operations.
+
+#################################
+
+The event loop is called a runtime model because it is a mechanism that controls the execution of code during runtime, or the time when the program is actually running.
+
+In JavaScript, the code is executed in a single-threaded environment, meaning that only one piece of code can be executed at a time. This can cause problems when running code that involves blocking I/O operations, such as waiting for a server response or reading from a file.
+
+To handle these operations without blocking the main thread, JavaScript uses the event loop as a way to manage asynchronous code execution. The event loop continuously monitors the execution stack and the message queue, allowing code to be executed when resources become available.
+
+Since the event loop is a mechanism that manages code execution during runtime, it is referred to as a runtime model. It is a key component of the JavaScript runtime environment and an important concept for JavaScript developers to understand.
+
+100)  write program to flat an object using js ?
+s : To flatten an object in JavaScript, you can use a recursive function that iterates over the object properties and their values, and flattens them into a new object. Here's an example implementation:
+
+
+const arr = [1,2,3,[4,5[6,7,8[9,1]]]];
+console.log(arr.flat(3));
